@@ -1,0 +1,36 @@
+{
+    "name": "vadimcontenthunter/git-scripts",
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.7",
+        "phpunit/phpunit": "^9.5.16"
+    },
+    "license": "GPL-3.0-only",
+    "autoload": {
+        "psr-4": {
+            "vadimcontenthunter\\GitScripts\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "vadimcontenthunter\\MyLogger\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Vadim",
+            "email": "project.k.vadim@gmail.com"
+        }
+    ],
+    "require": {},
+    "scripts": {
+        "phpcs": [
+            "./vendor/bin/phpcs"
+        ],
+        "phpunit_tests_all":[
+            "./vendor/bin/phpunit"
+        ],
+        "phpdoc": [
+            "php phpDocumentor.phar -d ./src -t ./docs/"
+        ]
+    }
+}
