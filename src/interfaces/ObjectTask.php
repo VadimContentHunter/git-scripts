@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\GitScripts\interfaces;
 
+use vadimcontenthunter\GitScripts\exception\GitScriptsException;
+
 /**
  * Интерфейс описывает основные методы для работы с "Объектами задача".
  *
@@ -19,6 +21,8 @@ interface ObjectTask
      * @param array<int|string> $index Массив существующих индексов.
      *
      * @return mixed
+     *
+     * @throws GitScriptsException
      */
     public function setIndex(array $index): mixed;
 
@@ -28,6 +32,8 @@ interface ObjectTask
      * @param string $title
      *
      * @return mixed
+     *
+     * @throws GitScriptsException
      */
     public function setTitle(string $title): mixed;
 
@@ -37,6 +43,8 @@ interface ObjectTask
      * @param string $path
      *
      * @return mixed
+     *
+     * @throws GitScriptsException
      */
     public function setExecutionPath(string $path): mixed;
 
@@ -44,6 +52,8 @@ interface ObjectTask
      * Метод выполняет текущую задачу.
      *
      * @return bool Возвращает в случае успеха true, иначе false.
+     *
+     * @throws GitScriptsException
      */
     public function execute(): bool;
 
