@@ -31,6 +31,13 @@ class StandardTask implements ObjectTask
     protected string $title = '';
 
     /**
+     * Параметр хранит статус выполнения задачи
+     *
+     * @var string
+     */
+    protected string $executionStatus = '';
+
+    /**
      * Метод устанавливает уникальный index для задачи, на основе существующих.
      *
      * @param array $index Массив существующих индексов.
@@ -39,7 +46,7 @@ class StandardTask implements ObjectTask
      *
      * @throws GitScriptsException
      */
-    public function setIndex(array $index): StandardTask
+    public function setIndex(array $index = []): StandardTask
     {
         return $this;
     }
@@ -82,6 +89,16 @@ class StandardTask implements ObjectTask
     public function execute(): bool
     {
         return false;
+    }
+
+    /**
+     * Метод возвращает статус выполнения задачи.
+     *
+     * @return string
+     */
+    public function getExecutionStatus(): string
+    {
+        return $this->executionStatus;
     }
 
     /**
