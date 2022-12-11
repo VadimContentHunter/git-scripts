@@ -67,14 +67,14 @@ interface ObjectTask
     /**
      * Метод возвращает уникальный index для задачи.
      *
-     * @return mixed
+     * @return string
      */
     public function getIndex(): string;
 
     /**
      * Метод возвращает наименование для задачи.
      *
-     * @return mixed
+     * @return string
      */
     public function getTitle(): string;
 }

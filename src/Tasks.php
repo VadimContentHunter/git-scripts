@@ -49,13 +49,25 @@ class Tasks
 
     /**
      * Метод запускает список задач на выполнение.
-     * Добавить или удалить задачи из списка, после этого запуска нельзя.
      *
-     * @return void
+     * @return array<ObjectTask>
      *
      * @throws GitScriptsException
      */
-    public function start(): void
+    public function start(): array
     {
+        return $this->getTaskList();
+    }
+
+    /**
+     * Метод возвращает наименование для задачи.
+     *
+     * @return array<ObjectTask>
+     *
+     * @throws GitScriptsException
+     */
+    public function getTaskList(): array
+    {
+        return $this->taskList;
     }
 }
