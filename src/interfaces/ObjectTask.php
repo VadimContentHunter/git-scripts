@@ -46,4 +46,18 @@ interface ObjectTask
      * @return bool Возвращает в случае успеха true, иначе false.
      */
     public function execute(): bool;
+
+    /**
+     * Метод возвращает уникальный index для задачи.
+     *
+     * @return mixed
+     */
+    public function getIndex(): string;
+
+    /**
+     * Метод возвращает наименование для задачи.
+     *
+     * @return mixed
+     */
+    public function getTitle(): string;
 }
