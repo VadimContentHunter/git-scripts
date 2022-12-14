@@ -6,6 +6,7 @@ namespace vadimcontenthunter\GitScripts\model;
 
 use vadimcontenthunter\GitScripts\exception\GitScriptsException;
 use vadimcontenthunter\GitScripts\interfaces\ObjectTask;
+use vadimcontenthunter\GitScripts\TaskProgressLevel;
 
 /**
  * Реализация стандартной задачи
@@ -31,11 +32,26 @@ class StandardTask implements ObjectTask
     protected string $title = '';
 
     /**
+     * Путь к выполняющему скрипту
+     *
+     * @var string
+     */
+    protected string $executionPath = '';
+
+    /**
      * Параметр хранит статус выполнения задачи
      *
      * @var string
      */
     protected string $executionStatus = '';
+
+    /**
+     * Initializes the StandardTask
+     */
+    public function __construct()
+    {
+        $this->executionStatus = TaskProgressLevel::WAITING;
+    }
 
     /**
      * Метод устанавливает уникальный index для задачи, на основе существующих.
@@ -119,5 +135,15 @@ class StandardTask implements ObjectTask
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+     /**
+     * Метод возвращает статус выполнения задачи.
+     *
+     * @return string
+     */
+    public function getExecutionPath(): string
+    {
+        return $this->executionPath;
     }
 }
