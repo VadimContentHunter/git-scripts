@@ -13,6 +13,8 @@ namespace vadimcontenthunter\GitScripts;
  */
 class TaskProgressLevel
 {
+    public const WAITING = 'waiting';
+
     public const DONE = 'done';
 
     public const PROGRESS = 'progress';
