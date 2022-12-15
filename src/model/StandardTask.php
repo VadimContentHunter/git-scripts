@@ -137,7 +137,7 @@ class StandardTask implements ObjectTask
         return $this->title;
     }
 
-     /**
+    /**
      * Метод возвращает статус выполнения задачи.
      *
      * @return string
