@@ -6,6 +6,13 @@ namespace vadimcontenthunter\GitScripts\Tests\src\fakes;
 
 use vadimcontenthunter\GitScripts\model\StandardTask;
 
+/**
+ * Класс подделка StandardTask
+ *
+ * @package   GitScripts_Tests_Fakes
+ * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
+ * @copyright (c) Vadim Volkovskyi 2022
+ */
 class StandardTaskFake extends StandardTask
 {
     /**
