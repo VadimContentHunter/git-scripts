@@ -122,7 +122,7 @@ class StandardTask implements ObjectTask
      *
      * @return mixed
      */
-    public function getIndex(): string
+    public function getIndex(): string|int
     {
         return $this->index;
     }

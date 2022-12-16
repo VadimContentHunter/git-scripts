@@ -69,7 +69,7 @@ interface ObjectTask
      *
      * @return string
      */
-    public function getIndex(): string;
+    public function getIndex(): string|int;
 
     /**
      * Метод возвращает наименование для задачи.
