@@ -106,6 +106,10 @@ class StandardTaskTest extends TestCase
                 'phpcs',
                 'phpcs',
             ],
+            'Heading in the form of numbers in a line' => [
+                '145458612',
+                '145458612',
+            ],
         ];
     }
 
@@ -118,7 +122,7 @@ class StandardTaskTest extends TestCase
      */
     public function test_setTitle_withTitleParameter_shouldThrowAnException(string $titleParameter, \Exception $expectableResult): void
     {
-        $this->expectException(GitScriptsException::class);
+        $this->expectException($expectableResult);
         $this->standardTaskFake->setTitle($titleParameter);
     }
 
@@ -136,12 +140,12 @@ class StandardTaskTest extends TestCase
      * @test
      * @dataProvider providerSetExecutionPath
      *
-     * @param array $titleParameter Параметр для метода
+     * @param array $executionPath Параметр для метода
      * @param string $expectableResult Ожидаемый результат
      */
-    public function test_setExecutionPath_withTitleParameter_shouldChangeTheTitleParameter(string $titleParameter, string $expectableResult): void
+    public function test_setExecutionPath_withExecutionPathParameter_shouldChangeTheTitleParameter(string $executionPath, string $expectableResult): void
     {
-        $this->standardTaskFake->setExecutionPath($titleParameter);
+        $this->standardTaskFake->setExecutionPath($executionPath);
         $this->assertEquals(
             $expectableResult,
             $this->standardTaskFake->fakeGetParameterExecutionPath()
@@ -151,9 +155,21 @@ class StandardTaskTest extends TestCase
     public function providerSetExecutionPath(): array
     {
         return [
-            'ExecutionPath' => [
-                '',
-                '',
+            'Full path to the file' => [
+                'D:\server\domains\git-scripts\tests\StandardTaskTest.php',
+                'D:\server\domains\git-scripts\tests\StandardTaskTest.php',
+            ],
+            'Full path to the file 2' => [
+                'D:/server/domains/git-scripts/tests/StandardTaskTest.php',
+                'D:/server/domains/git-scripts/tests/StandardTaskTest.php',
+            ],
+            'Relative file path' => [
+                '.\tests\StandardTaskTest.php',
+                '.\tests\StandardTaskTest.php',
+            ],
+            'Relative file path 2' => [
+                './tests/StandardTaskTest.php',
+                './tests/StandardTaskTest.php',
             ],
         ];
     }
@@ -162,20 +178,28 @@ class StandardTaskTest extends TestCase
      * @test
      * @dataProvider providerSetExecutionPathExceptions
      *
-     * @param array $titleParameter Параметр для метода
+     * @param array $executionPath Параметр для метода
      * @param string $expectableResult Ожидаемый результат
      */
-    public function test_setExecutionPath_withTitleParameter_shouldThrowAnException(string $titleParameter, \Exception $expectableResult): void
+    public function test_setExecutionPath_withExecutionPathParameter_shouldThrowAnException(string $executionPath, \Exception $expectableResult): void
     {
-        $this->expectException(GitScriptsException::class);
-        $this->standardTaskFake->setExecutionPath($titleParameter);
+        $this->expectException($expectableResult);
+        $this->standardTaskFake->setExecutionPath($executionPath);
     }
 
     public function providerSetExecutionPathExceptions(): array
     {
         return [
-            'ExecutionPath' => [
+            'ExecutionPath is empty' => [
                 '',
+                new GitScriptsException(),
+            ],
+            'File does not exist' => [
+                'D:/server/domains/git-scripts/non-existent-file.php',
+                new GitScriptsException(),
+            ],
+            'File does not exist 2' => [
+                'D:\server\domains\git-scripts\non-existent-file.php',
                 new GitScriptsException(),
             ],
         ];
@@ -192,6 +216,30 @@ class StandardTaskTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     * @dataProvider providerGetExecutionStatusExceptions
+     *
+     * @param array $executionStatus Параметр для метода
+     * @param string $expectableResult Ожидаемый результат
+     */
+    public function test_getExecutionStatus_withoutParameters_shouldThrowAnException(string $executionStatus, \Exception $expectableResult): void
+    {
+        $this->expectException($expectableResult);
+        $this->standardTaskFake->fakeSetParameterExecutionStatus($executionStatus);
+        $this->standardTaskFake->getExecutionStatus();
+    }
+
+    public function providerGetExecutionStatusExceptions(): array
+    {
+        return [
+            'ExecutionStatus is empty' => [
+                '',
+                new GitScriptsException(),
+            ],
+        ];
+    }
+
     /** @test */
     public function test_getIndex_withoutParameters_shouldReturnIndex(): void
     {
@@ -201,6 +249,30 @@ class StandardTaskTest extends TestCase
             $expectableResult,
             $this->standardTaskFake->getIndex()
         );
+    }
+
+    /**
+     * @test
+     * @dataProvider providerGetIndexExceptions
+     *
+     * @param array $index Параметр для метода
+     * @param string $expectableResult Ожидаемый результат
+     */
+    public function test_getIndex_withoutParameters_shouldThrowAnException(string $index, \Exception $expectableResult): void
+    {
+        $this->expectException($expectableResult);
+        $this->standardTaskFake->fakeSetParameterExecutionStatus($index);
+        $this->standardTaskFake->getIndex();
+    }
+
+    public function providerGetIndexExceptions(): array
+    {
+        return [
+            'Index is empty' => [
+                '',
+                new GitScriptsException(),
+            ],
+        ];
     }
 
     /** @test */
@@ -214,6 +286,30 @@ class StandardTaskTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     * @dataProvider providerGetTitleExceptions
+     *
+     * @param array $title Параметр для метода
+     * @param string $expectableResult Ожидаемый результат
+     */
+    public function test_getTitle_withoutParameters_shouldThrowAnException(string $title, \Exception $expectableResult): void
+    {
+        $this->expectException($expectableResult);
+        $this->standardTaskFake->fakeSetParameterExecutionStatus($title);
+        $this->standardTaskFake->getTitle();
+    }
+
+    public function providerGetTitleExceptions(): array
+    {
+        return [
+            'Title is empty' => [
+                '',
+                new GitScriptsException(),
+            ],
+        ];
+    }
+
     /** @test */
     public function test_getExecutionPath_withoutParameters_shouldReturnExecutionPath(): void
     {
@@ -223,5 +319,37 @@ class StandardTaskTest extends TestCase
             $expectableResult,
             $this->standardTaskFake->getExecutionPath()
         );
+    }
+
+    /**
+     * @test
+     * @dataProvider providerGetExecutionPathExceptions
+     *
+     * @param array $title Параметр для метода
+     * @param string $expectableResult Ожидаемый результат
+     */
+    public function test_getExecutionPath_withoutParameters_shouldThrowAnException(string $executionPath, \Exception $expectableResult): void
+    {
+        $this->expectException($expectableResult);
+        $this->standardTaskFake->fakeSetParameterExecutionStatus($executionPath);
+        $this->standardTaskFake->getExecutionPath();
+    }
+
+    public function providerGetExecutionPathExceptions(): array
+    {
+        return [
+            'Title is empty' => [
+                '',
+                new GitScriptsException(),
+            ],
+            'File does not exist' => [
+                'D:/server/domains/git-scripts/non-existent-file.php',
+                new GitScriptsException(),
+            ],
+            'File does not exist 2' => [
+                'D:\server\domains\git-scripts\non-existent-file.php',
+                new GitScriptsException(),
+            ],
+        ];
     }
 }
