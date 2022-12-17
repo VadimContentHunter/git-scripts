@@ -75,7 +75,7 @@ class ObjectTaskFake implements ObjectTask
      *
      * @return string
      */
-    public function getIndex(): string
+    public function getIndex(): string|int
     {
         return '';
     }
