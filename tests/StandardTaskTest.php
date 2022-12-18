@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace vadimcontenthunter\GitScripts\Tests;
 
 use PHPUnit\Framework\TestCase;
-use vadimcontenthunter\GitScripts\model\StandardTask;
 use vadimcontenthunter\GitScripts\TaskProgressLevel;
 use vadimcontenthunter\GitScripts\exception\GitScriptsException;
 use vadimcontenthunter\GitScripts\Tests\src\fakes\ObjectTaskFake;
@@ -47,6 +46,9 @@ class StandardTaskTest extends TestCase
 
     public function providerSetIndex(): array
     {
+        $stub = $this->createStub(ObjectTaskFake::class)
+                    ->method('getIndex')
+                    ->willReturn('7');
         return [
             'Empty index array' => [
                 [],
@@ -66,18 +68,10 @@ class StandardTaskTest extends TestCase
             ],
             'Array of indexes with ObjectTask objects' => [
                 [
-                    $this->createMock(ObjectTaskFake::class)
-                        ->method('getIndex')
-                        ->willReturn(7),
-                    $this->createMock(ObjectTaskFake::class)
-                        ->method('getIndex')
-                        ->willReturn(5),
-                    $this->createMock(ObjectTaskFake::class)
-                        ->method('getIndex')
-                        ->willReturn(3),
-                    $this->createMock(ObjectTaskFake::class)
-                        ->method('getIndex')
-                        ->willReturn(2),
+                    new ObjectTaskFake('4'),
+                    new ObjectTaskFake('3'),
+                    new ObjectTaskFake('7'),
+                    new ObjectTaskFake('1'),
                 ],
                 '8',
             ],
@@ -123,7 +117,7 @@ class StandardTaskTest extends TestCase
      */
     public function test_setTitle_withTitleParameter_shouldThrowAnException(string $titleParameter, \Exception $expectableResult): void
     {
-        $this->expectException($expectableResult);
+        $this->expectException($expectableResult::class);
         $this->standardTaskFake->setTitle($titleParameter);
     }
 
@@ -184,7 +178,7 @@ class StandardTaskTest extends TestCase
      */
     public function test_setExecutionPath_withExecutionPathParameter_shouldThrowAnException(string $executionPath, \Exception $expectableResult): void
     {
-        $this->expectException($expectableResult);
+        $this->expectException($expectableResult::class);
         $this->standardTaskFake->setExecutionPath($executionPath);
     }
 
@@ -226,7 +220,7 @@ class StandardTaskTest extends TestCase
      */
     public function test_getExecutionStatus_withoutParameters_shouldThrowAnException(string $executionStatus, \Exception $expectableResult): void
     {
-        $this->expectException($expectableResult);
+        $this->expectException($expectableResult::class);
         $this->standardTaskFake->fakeSetParameterExecutionStatus($executionStatus);
         $this->standardTaskFake->getExecutionStatus();
     }
@@ -261,7 +255,7 @@ class StandardTaskTest extends TestCase
      */
     public function test_getIndex_withoutParameters_shouldThrowAnException(string $index, \Exception $expectableResult): void
     {
-        $this->expectException($expectableResult);
+        $this->expectException($expectableResult::class);
         $this->standardTaskFake->fakeSetParameterExecutionStatus($index);
         $this->standardTaskFake->getIndex();
     }
@@ -296,7 +290,7 @@ class StandardTaskTest extends TestCase
      */
     public function test_getTitle_withoutParameters_shouldThrowAnException(string $title, \Exception $expectableResult): void
     {
-        $this->expectException($expectableResult);
+        $this->expectException($expectableResult::class);
         $this->standardTaskFake->fakeSetParameterExecutionStatus($title);
         $this->standardTaskFake->getTitle();
     }
@@ -331,7 +325,7 @@ class StandardTaskTest extends TestCase
      */
     public function test_getExecutionPath_withoutParameters_shouldThrowAnException(string $executionPath, \Exception $expectableResult): void
     {
-        $this->expectException($expectableResult);
+        $this->expectException($expectableResult::class);
         $this->standardTaskFake->fakeSetParameterExecutionStatus($executionPath);
         $this->standardTaskFake->getExecutionPath();
     }
@@ -403,7 +397,7 @@ class StandardTaskTest extends TestCase
         string $status,
         \Exception $expectableResult
     ): void {
-        $this->expectException($expectableResult);
+        $this->expectException($expectableResult::class);
 
         $this->standardTaskFake->fakeSetParameterIndex('');
         $this->standardTaskFake->fakeSetParameterTitle('');

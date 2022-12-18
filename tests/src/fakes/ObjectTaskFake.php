@@ -18,6 +18,18 @@ use vadimcontenthunter\GitScripts\TaskProgressLevel;
 class ObjectTaskFake implements ObjectTask
 {
     /**
+     * Параметр хранит индекс задачи
+     *
+     * @var string
+     */
+    public string $index = '';
+
+    public function __construct(string $_index = '')
+    {
+        $this->index = $_index;
+    }
+
+    /**
      * Метод устанавливает уникальный index для задачи, на основе существующих.
      *
      * @param array $index Массив существующих индексов.
@@ -77,7 +89,7 @@ class ObjectTaskFake implements ObjectTask
      */
     public function getIndex(): string|int
     {
-        return '';
+        return $this->index;
     }
 
     /**
