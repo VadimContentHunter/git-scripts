@@ -56,7 +56,7 @@ class StandardTask implements ObjectTask
     /**
      * Метод устанавливает уникальный index для задачи, на основе существующих.
      *
-     * @param array $index Массив существующих индексов.
+     * @param array<int|string|ObjectTask> $index Массив существующих индексов.
      *
      * @return StandardTask
      *
@@ -64,6 +64,46 @@ class StandardTask implements ObjectTask
      */
     public function setIndex(array $index = []): StandardTask
     {
+        $this->index = '1';
+
+        $newIndices = array_map(
+            function ($v) {
+                if ($v instanceof ObjectTask) {
+                    return $v->getIndex();
+                }
+                return $v;
+            },
+            $index
+        );
+
+        usort($newIndices, function ($a, $b) {
+            if ($a instanceof ObjectTask) {
+                $a = $a->getIndex();
+            }
+
+            if ($b instanceof ObjectTask) {
+                $b = $b->getIndex();
+            }
+
+            if (!is_numeric($a)) {
+                return 1;
+            }
+
+            if (is_numeric($a) && !is_numeric($b)) {
+                return -1;
+            }
+
+            if ($a === $b) {
+                return 0;
+            }
+
+            return ($a < $b) ? 1 : -1;
+        });
+
+        if (isset($newIndices[0]) && is_numeric($newIndices[0])) {
+            $this->index = (string) ++$newIndices[0];
+        }
+
         return $this;
     }
 
