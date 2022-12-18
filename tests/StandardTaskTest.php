@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace vadimcontenthunter\GitScripts\Tests;
 
 use PHPUnit\Framework\TestCase;
+use vadimcontenthunter\GitScripts\model\StandardTask;
 use vadimcontenthunter\GitScripts\TaskProgressLevel;
 use vadimcontenthunter\GitScripts\exception\GitScriptsException;
 use vadimcontenthunter\GitScripts\Tests\src\fakes\ObjectTaskFake;
@@ -87,7 +88,7 @@ class StandardTaskTest extends TestCase
      * @test
      * @dataProvider providerSetTitle
      *
-     * @param array $titleParameter Параметр для метода
+     * @param string $titleParameter Параметр для метода
      * @param string $expectableResult Ожидаемый результат
      */
     public function test_setTitle_withTitleParameter_shouldChangeTheTitleParameter(string $titleParameter, string $expectableResult): void
@@ -117,8 +118,8 @@ class StandardTaskTest extends TestCase
      * @test
      * @dataProvider providerSetTitleException
      *
-     * @param array $titleParameter Параметр для метода
-     * @param string $expectableResult Ожидаемый результат
+     * @param string $titleParameter Параметр для метода
+     * @param \Exception $expectableResult Ожидаемый результат
      */
     public function test_setTitle_withTitleParameter_shouldThrowAnException(string $titleParameter, \Exception $expectableResult): void
     {
@@ -140,7 +141,7 @@ class StandardTaskTest extends TestCase
      * @test
      * @dataProvider providerSetExecutionPath
      *
-     * @param array $executionPath Параметр для метода
+     * @param string $executionPath Параметр для метода
      * @param string $expectableResult Ожидаемый результат
      */
     public function test_setExecutionPath_withExecutionPathParameter_shouldChangeTheTitleParameter(string $executionPath, string $expectableResult): void
@@ -178,8 +179,8 @@ class StandardTaskTest extends TestCase
      * @test
      * @dataProvider providerSetExecutionPathExceptions
      *
-     * @param array $executionPath Параметр для метода
-     * @param string $expectableResult Ожидаемый результат
+     * @param string $executionPath Параметр для метода
+     * @param \Exception $expectableResult Ожидаемый результат
      */
     public function test_setExecutionPath_withExecutionPathParameter_shouldThrowAnException(string $executionPath, \Exception $expectableResult): void
     {
@@ -220,8 +221,8 @@ class StandardTaskTest extends TestCase
      * @test
      * @dataProvider providerGetExecutionStatusExceptions
      *
-     * @param array $executionStatus Параметр для метода
-     * @param string $expectableResult Ожидаемый результат
+     * @param string $executionStatus Параметр для метода
+     * @param \Exception $expectableResult Ожидаемый результат
      */
     public function test_getExecutionStatus_withoutParameters_shouldThrowAnException(string $executionStatus, \Exception $expectableResult): void
     {
@@ -255,8 +256,8 @@ class StandardTaskTest extends TestCase
      * @test
      * @dataProvider providerGetIndexExceptions
      *
-     * @param array $index Параметр для метода
-     * @param string $expectableResult Ожидаемый результат
+     * @param string $index Параметр для метода
+     * @param \Exception $expectableResult Ожидаемый результат
      */
     public function test_getIndex_withoutParameters_shouldThrowAnException(string $index, \Exception $expectableResult): void
     {
@@ -290,8 +291,8 @@ class StandardTaskTest extends TestCase
      * @test
      * @dataProvider providerGetTitleExceptions
      *
-     * @param array $title Параметр для метода
-     * @param string $expectableResult Ожидаемый результат
+     * @param string $title Параметр для метода
+     * @param \Exception $expectableResult Ожидаемый результат
      */
     public function test_getTitle_withoutParameters_shouldThrowAnException(string $title, \Exception $expectableResult): void
     {
@@ -325,8 +326,8 @@ class StandardTaskTest extends TestCase
      * @test
      * @dataProvider providerGetExecutionPathExceptions
      *
-     * @param array $title Параметр для метода
-     * @param string $expectableResult Ожидаемый результат
+     * @param string $executionPath Параметр для метода
+     * @param \Exception $expectableResult Ожидаемый результат
      */
     public function test_getExecutionPath_withoutParameters_shouldThrowAnException(string $executionPath, \Exception $expectableResult): void
     {
@@ -348,6 +349,105 @@ class StandardTaskTest extends TestCase
             ],
             'File does not exist 2' => [
                 'D:\server\domains\git-scripts\non-existent-file.php',
+                new GitScriptsException(),
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider providerExecute
+     *
+     * @param string $title Параметр для метода
+     * @param bool $expectableResult Ожидаемый результат
+     */
+    public function test_execute_withoutParameters_shouldReturnTrue(string $executionPath, bool $expectableResult): void
+    {
+        $this->standardTaskFake->setIndex();
+        $this->standardTaskFake->setTitle('ScriptFake');
+        $this->standardTaskFake->setExecutionPath($executionPath);
+        $result = $this->standardTaskFake->execute();
+        $this->assertEquals($expectableResult, $result);
+    }
+
+    public function providerExecute(): array
+    {
+        return [
+            'Script Return 5' => [
+                '.\tests\src\fakes\ScriptReturn5Fake.php',
+                false,
+            ],
+            'Script Return 0' => [
+                '.\tests\src\fakes\ScriptReturn0Fake.php',
+                true,
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider providerExecuteExceptions
+     *
+     * @param string $index Параметр для метода
+     * @param string $title Параметр для метода
+     * @param string $executionPath Параметр для метода
+     * @param string $status Параметр для метода
+     * @param \Exception $expectableResult Ожидаемый результат
+     *
+     * @return void
+     */
+    public function test_execute_withoutParameters_shouldThrowAnException(
+        string $index,
+        string $title,
+        string $executionPath,
+        string $status,
+        \Exception $expectableResult
+    ): void {
+        $this->expectException($expectableResult);
+
+        $this->standardTaskFake->fakeSetParameterIndex('');
+        $this->standardTaskFake->fakeSetParameterTitle('');
+        $this->standardTaskFake->fakeSetParameterExecutionPath('');
+        $this->standardTaskFake->fakeSetParameterExecutionStatus('');
+        $this->standardTaskFake->execute();
+    }
+
+    public function providerExecuteExceptions(): array
+    {
+        return [
+            'Empty parameters' => [
+                '',
+                '',
+                '',
+                '',
+                new GitScriptsException(),
+            ],
+            'Empty parameter index' => [
+                '',
+                'ScriptFake',
+                '.\tests\src\fakes\ScriptReturn0Fake.php',
+                TaskProgressLevel::WAITING,
+                new GitScriptsException(),
+            ],
+            'Empty parameter title' => [
+                '1',
+                '',
+                '.\tests\src\fakes\ScriptReturn0Fake.php',
+                TaskProgressLevel::WAITING,
+                new GitScriptsException(),
+            ],
+            'Empty parameter execution path' => [
+                '1',
+                'ScriptFake',
+                '',
+                TaskProgressLevel::WAITING,
+                new GitScriptsException(),
+            ],
+            'Empty parameter status' => [
+                '1',
+                'ScriptFake',
+                '.\tests\src\fakes\ScriptReturn0Fake.php',
+                '',
                 new GitScriptsException(),
             ],
         ];
