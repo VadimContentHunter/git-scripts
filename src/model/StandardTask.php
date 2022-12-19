@@ -209,6 +209,14 @@ class StandardTask implements ObjectTask
      */
     public function getExecutionPath(): string
     {
+        if ($this->executionPath === '') {
+            throw new GitScriptsException("Execution path is empty.");
+        }
+
+        if (!is_file($this->executionPath)) {
+            throw new GitScriptsException("Invalid file path.");
+        }
+
         return $this->executionPath;
     }
 }

@@ -335,7 +335,7 @@ class StandardTaskTest extends TestCase
     /** @test */
     public function test_getExecutionPath_withoutParameters_shouldReturnExecutionPath(): void
     {
-        $expectableResult = './folder/test.php';
+        $expectableResult = '.\tests\StandardTaskTest.php';
         $this->standardTaskFake->fakeSetParameterExecutionPath($expectableResult);
         $this->assertEquals(
             $expectableResult,
