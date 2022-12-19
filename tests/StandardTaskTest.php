@@ -149,14 +149,15 @@ class StandardTaskTest extends TestCase
 
     public function providerSetExecutionPath(): array
     {
+        $folder = preg_replace('~[\\/]tests[\\/]?.*~ui', '', __DIR__);
         return [
             'Full path to the file' => [
-                'D:\server\domains\git-scripts\tests\StandardTaskTest.php',
-                'D:\server\domains\git-scripts\tests\StandardTaskTest.php',
+                $folder . '\tests\StandardTaskTest.php',
+                $folder . '\tests\StandardTaskTest.php',
             ],
             'Full path to the file 2' => [
-                'D:/server/domains/git-scripts/tests/StandardTaskTest.php',
-                'D:/server/domains/git-scripts/tests/StandardTaskTest.php',
+                $folder . '/tests/StandardTaskTest.php',
+                $folder . '/tests/StandardTaskTest.php',
             ],
             'Relative file path' => [
                 '.\tests\StandardTaskTest.php',
@@ -184,17 +185,42 @@ class StandardTaskTest extends TestCase
 
     public function providerSetExecutionPathExceptions(): array
     {
+        $folder = preg_replace('~[\\/]tests[\\/]?.*~ui', '', __DIR__);
         return [
             'ExecutionPath is empty' => [
                 '',
                 new GitScriptsException(),
             ],
             'File does not exist' => [
-                'D:/server/domains/git-scripts/non-existent-file.php',
+                $folder . '/non-existent-file.php',
                 new GitScriptsException(),
             ],
             'File does not exist 2' => [
-                'D:\server\domains\git-scripts\non-existent-file.php',
+                $folder . '\non-existent-file.php',
+                new GitScriptsException(),
+            ],
+            'File does not exist 3' => [
+                './non-existent-file.php',
+                new GitScriptsException(),
+            ],
+            'File does not exist 4' => [
+                '.\non-existent-file.php',
+                new GitScriptsException(),
+            ],
+            'Folder selected' => [
+                $folder . '/git-scripts/tests',
+                new GitScriptsException(),
+            ],
+            'Folder selected 2' => [
+                $folder . '\git-scripts\tests',
+                new GitScriptsException(),
+            ],
+            'Folder selected 3' => [
+                './tests',
+                new GitScriptsException(),
+            ],
+            'Folder selected 4' => [
+                '.\tests',
                 new GitScriptsException(),
             ],
         ];
