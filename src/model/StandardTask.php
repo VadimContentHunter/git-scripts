@@ -118,6 +118,11 @@ class StandardTask implements ObjectTask
      */
     public function setTitle(string $title): StandardTask
     {
+        if ($title === '') {
+            throw new GitScriptsException("Title is empty");
+        }
+
+        $this->title = $title;
         return $this;
     }
 
