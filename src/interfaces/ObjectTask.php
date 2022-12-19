@@ -58,16 +58,23 @@ interface ObjectTask
     public function execute(): bool;
 
     /**
+     * Метод возвращает статус выполнения задачи.
+     *
+     * @return string
+     */
+    public function getExecutionStatus(): string;
+
+    /**
      * Метод возвращает уникальный index для задачи.
      *
-     * @return mixed
+     * @return string
      */
-    public function getIndex(): string;
+    public function getIndex(): string|int;
 
     /**
      * Метод возвращает наименование для задачи.
      *
-     * @return mixed
+     * @return string
      */
     public function getTitle(): string;
 }

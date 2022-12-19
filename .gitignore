@@ -2,3 +2,5 @@
 /vendor
 /phpunit.xml
 /phpDocumentor.phar
+/.phpunit.result.cache
+/index.php

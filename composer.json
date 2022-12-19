@@ -12,7 +12,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "vadimcontenthunter\\MyLogger\\Tests\\": "tests/"
+            "vadimcontenthunter\\GitScripts\\Tests\\": "tests/"
         }
     },
     "authors": [
