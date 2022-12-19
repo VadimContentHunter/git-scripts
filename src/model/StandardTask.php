@@ -162,9 +162,15 @@ class StandardTask implements ObjectTask
      * Метод возвращает статус выполнения задачи.
      *
      * @return string
+     *
+     * @throws GitScriptsException
      */
     public function getExecutionStatus(): string
     {
+        if ($this->executionStatus === '') {
+            throw new GitScriptsException("Execution status is empty.");
+        }
+
         return $this->executionStatus;
     }
 
