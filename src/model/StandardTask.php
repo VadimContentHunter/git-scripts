@@ -181,6 +181,10 @@ class StandardTask implements ObjectTask
      */
     public function getIndex(): string|int
     {
+        if ($this->index === '') {
+            throw new GitScriptsException("Index is empty.");
+        }
+
         return $this->index;
     }
 
