@@ -137,6 +137,12 @@ class StandardTask implements ObjectTask
      */
     public function setExecutionPath(string $path): StandardTask
     {
+        if (!is_file($path)) {
+            throw new GitScriptsException("Invalid file path.");
+        }
+
+        $this->executionPath = $path;
+
         return $this;
     }
 

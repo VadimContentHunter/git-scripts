@@ -154,12 +154,8 @@ class StandardTaskTest extends TestCase
             'Full path to the file' => [
                 $folder . '\tests\StandardTaskTest.php',
                 $folder . '\tests\StandardTaskTest.php',
-                $folder . '\tests\StandardTaskTest.php',
-                $folder . '\tests\StandardTaskTest.php',
             ],
             'Full path to the file 2' => [
-                $folder . '/tests/StandardTaskTest.php',
-                $folder . '/tests/StandardTaskTest.php',
                 $folder . '/tests/StandardTaskTest.php',
                 $folder . '/tests/StandardTaskTest.php',
             ],
@@ -197,7 +193,6 @@ class StandardTaskTest extends TestCase
                 new GitScriptsException(),
             ],
             'File does not exist' => [
-                $folder . '/non-existent-file.php',
                 $folder . '/non-existent-file.php',
                 new GitScriptsException(),
             ],
