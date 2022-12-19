@@ -353,13 +353,13 @@ class StandardTaskTest extends TestCase
     public function test_getExecutionPath_withoutParameters_shouldThrowAnException(string $executionPath, \Exception $expectableResult): void
     {
         $this->expectException($expectableResult::class);
-        $this->standardTaskFake->fakeSetParameterExecutionStatus($executionPath);
+        $this->standardTaskFake->fakeSetParameterExecutionPath($executionPath);
         $this->standardTaskFake->getExecutionPath();
     }
 
     public function providerGetExecutionPathExceptions(): array
     {
-        $folder = preg_replace('~[\\/]*tests[\\/]*.*~ui', '', __DIR__);
+        $folder = preg_replace('~[\\/]tests[\\/]*.*~ui', '', __DIR__);
         return [
             'Title is empty' => [
                 '',
