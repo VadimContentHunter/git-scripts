@@ -150,11 +150,63 @@ class StandardTask implements ObjectTask
      * Метод выполняет текущую задачу.
      *
      * @return bool Возвращает в случае успеха true, иначе false.
+     *              Вернет true даже если задача была выполнена но не с нулевым кодом завершения.
      *
      * @throws GitScriptsException
      */
     public function execute(): bool
     {
+        $index = $this->getIndex();
+        $title = $this->getTitle();
+        $executionPath = $this->getExecutionPath();
+        $executionStatus = $this->getExecutionStatus();
+        $output = null;
+        $retval = null;
+
+        $headString = PHP_EOL . 'Задача [ #' . $index . ' ' . $title . ' ] > ';
+
+        if ($executionStatus !== TaskProgressLevel::WAITING) {
+            print_r($headString . 'Нет в списках на ожидание.');
+            print_r(PHP_EOL);
+            return false;
+        }
+
+        $this->executionStatus = TaskProgressLevel::PROGRESS;
+        print_r($headString . 'Выполняется . . .');
+        if (exec('php ' . $executionPath, $output, $retval) === false) {
+            throw new GitScriptsException("An unknown error occurred while executing.");
+        }
+
+        if ($retval === 0) {
+            print_r($headString . 'Была выполнена, успешно.');
+            print_r(PHP_EOL);
+            $this->executionStatus = TaskProgressLevel::DONE;
+            return true;
+        }
+
+        if ($retval !== 0) {
+            print_r($headString . 'Была выполнена, с ошибкой.');
+            $this->executionStatus = TaskProgressLevel::ERROR;
+            if (count($output) !== 0 && $output !== null) {
+                print_r($output);
+                print_r(PHP_EOL);
+            } else {
+                print_r($headString . 'Сообщения от задачи нету!');
+                print_r(PHP_EOL);
+            }
+            return false;
+        }
+
+        print_r($headString . 'Была не выполнена.');
+        $this->executionStatus = TaskProgressLevel::NOT_IMPLEMENTED;
+        if (count($output) !== 0 && $output !== null) {
+            print_r($output);
+            print_r(PHP_EOL);
+        } else {
+            print_r($headString . 'сообщения от задачи нету!');
+            print_r(PHP_EOL);
+        }
+
         return false;
     }
 

@@ -20,4 +20,8 @@ class TaskProgressLevel
     public const PROGRESS = 'progress';
 
     public const ABORTED = 'aborted';
+
+    public const ERROR = 'error';
+
+    public const NOT_IMPLEMENTED = 'not_implemented';
 }
