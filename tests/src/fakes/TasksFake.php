@@ -16,12 +16,26 @@ use vadimcontenthunter\GitScripts\Tasks;
 class TasksFake extends Tasks
 {
     /**
-     * Метод возвращает список из защищенного параметра без каких либо взаимодействием.
+     * Возвращает список из защищенного параметра без каких либо взаимодействием.
      *
      * @return array
      */
     public function fakeGetTaskList(): array
     {
         return $this->taskList;
+    }
+
+    /**
+     * Устанавливает новое значение для приватного параметра списка задач, без каких либо манипуляций.
+     *
+     * @param array $_taskList
+     *
+     * @return TasksFake
+     */
+    public function fakeSetTaskList(array $_taskList): TasksFake
+    {
+        $this->taskList = $_taskList;
+
+        return $this;
     }
 }
