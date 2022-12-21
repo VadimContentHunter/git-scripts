@@ -51,38 +51,51 @@ class TasksTest extends TestCase
 
     public function providerAddTaskList(): array
     {
+        $path = '.\\test\\test.test';
         return [
             'Test 1' => [
                 [
                     (new StandardTaskFake(new NullLogger()))
                         ->fakeSetParameterTitle('Task 1')
-                        ->fakeSetParameterExecutionPath('.\\test\\test.test'),
+                        ->fakeSetParameterExecutionPath($path),
                     (new StandardTaskFake(new NullLogger()))
                         ->fakeSetParameterTitle('Task 2')
-                        ->fakeSetParameterExecutionPath('.\\test\\test.test'),
-                    (new StandardTaskFake(new NullLogger()))
-                        ->fakeSetParameterTitle('Task 3')
-                        ->fakeSetParameterExecutionPath('.\\test\\test.test'),
-                    (new StandardTaskFake(new NullLogger()))
-                        ->fakeSetParameterTitle('Task 4')
-                        ->fakeSetParameterExecutionPath('.\\test\\test.test'),
+                        ->fakeSetParameterExecutionPath($path),
                 ],
                 [
                     (new StandardTaskFake(new NullLogger()))
                         ->fakeSetParameterIndex('1')
                         ->fakeSetParameterTitle('Task 1')
+                        ->fakeSetParameterExecutionPath($path)
                         ->fakeSetParameterExecutionStatus(TaskProgressLevel::WAITING),
                     (new StandardTaskFake(new NullLogger()))
                         ->fakeSetParameterIndex('2')
                         ->fakeSetParameterTitle('Task 2')
+                        ->fakeSetParameterExecutionPath($path)
                         ->fakeSetParameterExecutionStatus(TaskProgressLevel::WAITING),
+                ],
+            ],
+            'Test 2' => [
+                [
                     (new StandardTaskFake(new NullLogger()))
-                        ->fakeSetParameterIndex('3')
-                        ->fakeSetParameterTitle('Task 3')
-                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::WAITING),
+                        ->fakeSetParameterIndex('2')
+                        ->fakeSetParameterTitle('Task 2')
+                        ->fakeSetParameterExecutionPath($path),
                     (new StandardTaskFake(new NullLogger()))
                         ->fakeSetParameterIndex('4')
                         ->fakeSetParameterTitle('Task 4')
+                        ->fakeSetParameterExecutionPath($path),
+                ],
+                [
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('1')
+                        ->fakeSetParameterTitle('Task 2')
+                        ->fakeSetParameterExecutionPath($path)
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::WAITING),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('2')
+                        ->fakeSetParameterTitle('Task 4')
+                        ->fakeSetParameterExecutionPath($path)
                         ->fakeSetParameterExecutionStatus(TaskProgressLevel::WAITING),
                 ],
             ],
