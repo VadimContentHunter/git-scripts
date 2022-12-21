@@ -11,6 +11,13 @@ use vadimcontenthunter\GitScripts\exception\GitScriptsException;
 use vadimcontenthunter\GitScripts\Tests\src\fakes\ObjectTaskFake;
 use vadimcontenthunter\GitScripts\Tests\src\fakes\StandardTaskFake;
 
+/**
+ * Тесты для класса StandardTaskTest
+ *
+ * @package   GitScripts_Tests
+ * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
+ * @copyright (c) Vadim Volkovskyi 2022
+ */
 class StandardTaskTest extends TestCase
 {
     protected StandardTaskFake $standardTaskFake;
