@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace vadimcontenthunter\GitScripts\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use vadimcontenthunter\GitScripts\TaskProgressLevel;
 use vadimcontenthunter\GitScripts\exception\GitScriptsException;
 use vadimcontenthunter\GitScripts\Tests\src\fakes\ObjectTaskFake;
@@ -16,7 +17,7 @@ class StandardTaskTest extends TestCase
 
     public function setUp(): void
     {
-        $this->standardTaskFake = new StandardTaskFake();
+        $this->standardTaskFake = new StandardTaskFake(new NullLogger());
     }
 
     /** @test */

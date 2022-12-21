@@ -21,7 +21,9 @@
             "email": "project.k.vadim@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "psr/log": "^3.0"
+    },
     "scripts": {
         "phpcs": [
             "./vendor/bin/phpcs"
