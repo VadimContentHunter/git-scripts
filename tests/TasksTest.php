@@ -232,6 +232,7 @@ class TasksTest extends TestCase
     ): void {
         $this->expectException($expectableResult::class);
 
+        $this->tasksFake->fakeSetTaskList($taskList);
         $this->tasksFake->getTaskList();
     }
 
