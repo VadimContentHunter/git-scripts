@@ -46,6 +46,14 @@ class Tasks
      */
     public function deleteTaskList(string $index): bool
     {
+        foreach ($this->taskList as $key => $task) {
+            if (strcmp($task->getIndex(), $index) === 0) {
+                unset($this->taskList[$key]);
+                sort($this->taskList);
+                return true;
+            }
+        }
+
         return false;
     }
 
