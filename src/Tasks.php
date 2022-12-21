@@ -32,6 +32,8 @@ class Tasks
      */
     public function addTaskList(ObjectTask $objectTask): Tasks
     {
+        $objectTask->setIndex($this->taskList);
+        $this->taskList[] = $objectTask;
         return $this;
     }
 
