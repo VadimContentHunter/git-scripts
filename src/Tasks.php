@@ -78,6 +78,11 @@ class Tasks
      */
     public function getTaskList(): array
     {
+        foreach ($this->taskList as $key => $task) {
+            if (!($task instanceof ObjectTask)) {
+                throw new GitScriptsException("Incorrect array element type, must be an ObjectTask");
+            }
+        }
         return $this->taskList;
     }
 }
