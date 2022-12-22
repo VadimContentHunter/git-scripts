@@ -4,3 +4,4 @@
 /phpDocumentor.phar
 /.phpunit.result.cache
 /index.php
+/.phpdoc/cache
