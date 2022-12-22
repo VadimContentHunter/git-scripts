@@ -174,21 +174,21 @@ class StandardTask implements ObjectTask
         $output = null;
         $retval = null;
 
-        $headString = PHP_EOL . 'Задача [ #' . $index . ' ' . $title . ' ] > ';
+        $headString =  'Задача [ #' . $index . ' ' . $title . ' ] > ';
 
         if ($executionStatus !== TaskProgressLevel::WAITING) {
-            $this->loggerInterface->info($headString . 'Нет в списках на ожидание.' . PHP_EOL);
+            $this->loggerInterface->info($headString . 'Нет в списках на ожидание.');
             return false;
         }
 
         $this->executionStatus = TaskProgressLevel::PROGRESS;
-        $this->loggerInterface->info($headString . 'Выполняется . . .' . PHP_EOL);
+        $this->loggerInterface->info($headString . 'Выполняется . . .');
         if (exec('php ' . $executionPath, $output, $retval) === false) {
             throw new GitScriptsException("An unknown error occurred while executing.");
         }
 
         if ($retval === 0) {
-            $this->loggerInterface->info($headString . 'Была выполнена, успешно.' . PHP_EOL);
+            $this->loggerInterface->info($headString . 'Была выполнена, успешно.');
             $this->executionStatus = TaskProgressLevel::DONE;
             return true;
         }
@@ -196,20 +196,20 @@ class StandardTask implements ObjectTask
         if ($retval !== 0) {
             $this->executionStatus = TaskProgressLevel::ERROR;
             if (count($output) !== 0 && $output !== null) {
-                $this->loggerInterface->warning($headString . 'Была выполнена, с ошибкой.' . PHP_EOL);
-                $this->loggerInterface->debug(implode(PHP_EOL, $output));
+                $this->loggerInterface->warning($headString . 'Была выполнена, с ошибкой.');
+                $this->loggerInterface->debug(implode(' \\n ', $output));
             } else {
-                $this->loggerInterface->warning($headString . 'Была выполнена, с ошибкой.' . PHP_EOL . 'Сообщения от задачи нету!' . PHP_EOL);
+                $this->loggerInterface->warning($headString . 'Была выполнена, с ошибкой. Сообщения от задачи нету!');
             }
             return false;
         }
 
         $this->executionStatus = TaskProgressLevel::NOT_IMPLEMENTED;
         if (count($output) !== 0 && $output !== null) {
-            $this->loggerInterface->error($headString . 'Была не выполнена.' . PHP_EOL);
-            $this->loggerInterface->debug(implode(PHP_EOL, $output));
+            $this->loggerInterface->error($headString . 'Была не выполнена.');
+            $this->loggerInterface->debug(implode(' \\n ', $output));
         } else {
-            $this->loggerInterface->error($headString . 'Была не выполнена.' . PHP_EOL . 'Сообщения от задачи нету!' . PHP_EOL);
+            $this->loggerInterface->error($headString . 'Была не выполнена. Сообщения от задачи нету!');
         }
 
         return false;
