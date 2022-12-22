@@ -518,12 +518,12 @@ class StandardTaskTest extends TestCase
     /** @test */
     public function test_addArgumentsAsString_withAStringOfArguments_shouldOutputTheSpecifiedMessage(): void
     {
-        $this->expectOutputString('ScriptReturn0Fake.php');
-
-        $this->standardTaskFake->setIndex()
+        $result = $this->standardTaskFake->setIndex()
             ->setTitle('ScriptFake')
-            ->setExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php')
-            ->addArgumentsAsString('ScriptReturn0Fake.php')
+            ->setExecutionPath('.\tests\src\fakes\ScriptReturn1or0Fake.php')
+            ->addArgumentsAsString('ScriptReturn1or0Fake.php')
             ->execute();
+
+        $this->assertEquals(true, $result);
     }
 }
