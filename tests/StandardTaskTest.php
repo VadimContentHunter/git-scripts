@@ -482,4 +482,20 @@ class StandardTaskTest extends TestCase
             ],
         ];
     }
+
+    /** @test */
+    public function test_setWhenExecuteTrue_withFunction_mustExecuteBeforeTheExecuteMethod(): void
+    {
+        $this->expectOutputString('setWhenExecuteTrue');
+
+        $this->standardTaskFake->setIndex()
+            ->setTitle('ScriptFake')
+            ->setExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php')
+            ->setWhenExecuteTrue(
+                function () {
+                    print('setWhenExecuteTrue');
+                }
+            )
+            ->execute();
+    }
 }
