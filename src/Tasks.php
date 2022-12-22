@@ -60,18 +60,18 @@ class Tasks
     /**
      * Метод запускает список задач на выполнение.
      *
-     * @return Tasks
+     * @return bool
      *
      * @throws GitScriptsException
      */
-    public function start(): Tasks
+    public function start(): bool
     {
         foreach ($this->getTaskList() as $key => $task) {
-            if ($task instanceof ObjectTask) {
-                $task->execute();
+            if ($task instanceof ObjectTask && !$task->execute()) {
+                return false;
             }
         }
-        return $this;
+        return true;
     }
 
     /**
