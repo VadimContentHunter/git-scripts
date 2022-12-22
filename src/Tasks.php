@@ -102,5 +102,6 @@ class Tasks
      */
     public function result(callable $_function): void
     {
+        $_function($this->start());
     }
 }
