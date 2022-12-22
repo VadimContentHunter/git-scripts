@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace vadimcontenthunter\GitScripts\model;
 
 use Psr\Log\LoggerInterface;
+use stdClass;
 use vadimcontenthunter\GitScripts\TaskProgressLevel;
 use vadimcontenthunter\GitScripts\interfaces\ObjectTask;
 use vadimcontenthunter\GitScripts\exception\GitScriptsException;
@@ -45,6 +46,13 @@ class StandardTask implements ObjectTask
      * @var string
      */
     protected string $executionStatus = '';
+
+    /**
+     * Хранит callback функцию. По умолчанию null.
+     *
+     * @var \Closure|null
+     */
+    protected ?\Closure $functionWhenExecuteTrue = null;
 
     /**
      * Saves the initialization of the LoggerInterface
@@ -252,6 +260,12 @@ class StandardTask implements ObjectTask
         if ($retval === 0) {
             $this->loggerInterface->info($headString . 'Была выполнена, успешно.');
             $this->executionStatus = TaskProgressLevel::DONE;
+
+            // вызов функции перед возвратом результата, если не null
+            if ($this->functionWhenExecuteTrue !== null) {
+                $this->functionWhenExecuteTrue->call($this);
+            }
+
             return true;
         }
 
@@ -289,6 +303,7 @@ class StandardTask implements ObjectTask
      */
     public function setWhenExecuteTrue(callable $_function): StandardTask
     {
+        $this->functionWhenExecuteTrue = $_function;
         return $this;
     }
 
