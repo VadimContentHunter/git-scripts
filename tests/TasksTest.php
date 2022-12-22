@@ -392,6 +392,7 @@ class TasksTest extends TestCase
                         ->fakeSetParameterIndex('1')
                         ->fakeSetParameterTitle('Task 1')
                         ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php'),
+                    123,
                 ],
                 new GitScriptsException(),
             ],
