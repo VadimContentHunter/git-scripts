@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace vadimcontenthunter\GitScripts\model;
 
 use Psr\Log\LoggerInterface;
+use stdClass;
 use vadimcontenthunter\GitScripts\TaskProgressLevel;
 use vadimcontenthunter\GitScripts\interfaces\ObjectTask;
 use vadimcontenthunter\GitScripts\exception\GitScriptsException;
+use vadimcontenthunter\GitScripts\Tasks;
 
 /**
  * Реализация стандартной задачи
@@ -45,6 +47,29 @@ class StandardTask implements ObjectTask
      * @var string
      */
     protected string $executionStatus = '';
+
+    /**
+     * Хранит callback функцию, которая будет выполняться,
+     * если метод execute будет возвращать true. По умолчанию null.
+     *
+     * @var \Closure|null
+     */
+    protected ?\Closure $functionWhenExecuteTrue = null;
+
+    /**
+     * Хранит callback функцию, которая будет выполняться,
+     * если метод execute будет возвращать false. По умолчанию null.
+     *
+     * @var \Closure|null
+     */
+    protected ?\Closure $functionWhenExecuteFalse = null;
+
+    /**
+     * Хранит в строке аргументы для запуска файла
+     *
+     * @var string
+     */
+    protected string $arguments = '';
 
     /**
      * Saves the initialization of the LoggerInterface
@@ -158,64 +183,6 @@ class StandardTask implements ObjectTask
     }
 
     /**
-     * Метод выполняет текущую задачу.
-     *
-     * @return bool Возвращает в случае успеха true, иначе false.
-     *              Вернет true даже если задача была выполнена но не с нулевым кодом завершения.
-     *
-     * @throws GitScriptsException
-     */
-    public function execute(): bool
-    {
-        $index = $this->getIndex();
-        $title = $this->getTitle();
-        $executionPath = $this->getExecutionPath();
-        $executionStatus = $this->getExecutionStatus();
-        $output = null;
-        $retval = null;
-
-        $headString = PHP_EOL . 'Задача [ #' . $index . ' ' . $title . ' ] > ';
-
-        if ($executionStatus !== TaskProgressLevel::WAITING) {
-            $this->loggerInterface->info($headString . 'Нет в списках на ожидание.' . PHP_EOL);
-            return false;
-        }
-
-        $this->executionStatus = TaskProgressLevel::PROGRESS;
-        $this->loggerInterface->info($headString . 'Выполняется . . .' . PHP_EOL);
-        if (exec('php ' . $executionPath, $output, $retval) === false) {
-            throw new GitScriptsException("An unknown error occurred while executing.");
-        }
-
-        if ($retval === 0) {
-            $this->loggerInterface->info($headString . 'Была выполнена, успешно.' . PHP_EOL);
-            $this->executionStatus = TaskProgressLevel::DONE;
-            return true;
-        }
-
-        if ($retval !== 0) {
-            $this->executionStatus = TaskProgressLevel::ERROR;
-            if (count($output) !== 0 && $output !== null) {
-                $this->loggerInterface->warning($headString . 'Была выполнена, с ошибкой.' . PHP_EOL);
-                $this->loggerInterface->debug(implode(PHP_EOL, $output));
-            } else {
-                $this->loggerInterface->warning($headString . 'Была выполнена, с ошибкой.' . PHP_EOL . 'Сообщения от задачи нету!' . PHP_EOL);
-            }
-            return false;
-        }
-
-        $this->executionStatus = TaskProgressLevel::NOT_IMPLEMENTED;
-        if (count($output) !== 0 && $output !== null) {
-            $this->loggerInterface->error($headString . 'Была не выполнена.' . PHP_EOL);
-            $this->loggerInterface->debug(implode(PHP_EOL, $output));
-        } else {
-            $this->loggerInterface->error($headString . 'Была не выполнена.' . PHP_EOL . 'Сообщения от задачи нету!' . PHP_EOL);
-        }
-
-        return false;
-    }
-
-    /**
      * Метод возвращает статус выполнения задачи.
      *
      * @return string
@@ -275,5 +242,126 @@ class StandardTask implements ObjectTask
         }
 
         return $this->executionPath;
+    }
+
+    /**
+     * Метод выполняет текущую задачу.
+     *
+     * @return bool Возвращает в случае успеха true, иначе false.
+     *              Вернет true даже если задача была выполнена но не с нулевым кодом завершения.
+     *
+     * @throws GitScriptsException
+     */
+    public function execute(): bool
+    {
+        $index = $this->getIndex();
+        $title = $this->getTitle();
+        $executionPath = $this->getExecutionPath();
+        $executionStatus = $this->getExecutionStatus();
+        $output = null;
+        $retval = null;
+
+        // Начало строки для логирования.
+        $headString =  'Задача [ #' . $index . ' ' . $title . ' ] > ';
+
+        if ($executionStatus !== TaskProgressLevel::WAITING) {
+            $this->loggerInterface->info($headString . 'Нет в списках на ожидание.');
+            return false;
+        }
+
+        $this->executionStatus = TaskProgressLevel::PROGRESS;
+        $this->loggerInterface->info($headString . 'Выполняется . . .');
+        if (exec('php ' . $executionPath . ' ' . $this->arguments, $output, $retval) === false) {
+            throw new GitScriptsException("An unknown error occurred while executing.");
+        }
+
+        if ($retval === 0) {
+            $this->loggerInterface->info($headString . 'Была выполнена, успешно.');
+            $this->executionStatus = TaskProgressLevel::DONE;
+
+            // вызов функции перед возвратом результата, если не null
+            if ($this->functionWhenExecuteTrue !== null) {
+                $this->functionWhenExecuteTrue->call($this, $this);
+            }
+            return true;
+        }
+
+        if ($retval !== 0) {
+            $this->executionStatus = TaskProgressLevel::ERROR;
+            if (count($output) !== 0 && $output !== null) {
+                $this->loggerInterface->warning($headString . 'Была выполнена, с ошибкой.');
+                $this->loggerInterface->debug(implode(' \\n ', $output));
+            } else {
+                $this->loggerInterface->warning($headString . 'Была выполнена, с ошибкой. Сообщения от задачи нету!');
+            }
+
+            // вызов функции перед возвратом результата, если не null
+            if ($this->functionWhenExecuteFalse !== null) {
+                $this->functionWhenExecuteFalse->call($this, $this);
+            }
+            return false;
+        }
+
+        $this->executionStatus = TaskProgressLevel::NOT_IMPLEMENTED;
+        if (count($output) !== 0 && $output !== null) {
+            $this->loggerInterface->error($headString . 'Была не выполнена.');
+            $this->loggerInterface->debug(implode(' \\n ', $output));
+        } else {
+            $this->loggerInterface->error($headString . 'Была не выполнена. Сообщения от задачи нету!');
+        }
+
+        // вызов функции перед возвратом результата, если не null
+        if ($this->functionWhenExecuteFalse !== null) {
+            $this->functionWhenExecuteFalse->call($this, $this);
+        }
+        return false;
+    }
+
+    /**
+     * Выполняется если метод execute возвращает значение true
+     * С начало выполниться функция установленная в этом методе,
+     * потом вернется значение execute.
+     * В качестве аргумента, функция принимает текущий объект.
+     * Результат функции будет не обработан.
+     *
+     * @param callable $_function Функция, которая будет выполнена
+     *
+     * @return StandardTask
+     */
+    public function setWhenExecuteTrue(callable $_function): StandardTask
+    {
+        $this->functionWhenExecuteTrue = $_function;
+        return $this;
+    }
+
+    /**
+     * Выполняется если метод execute возвращает значение false
+     * С начало выполниться функция установленная в этом методе,
+     * потом вернется значение execute.
+     * В качестве аргумента, функция принимает текущий объект.
+     * Результат функции будет не обработан.
+     *
+     * @param callable $_function Функция, которая будет выполнена
+     *
+     * @return StandardTask
+     */
+    public function setWhenExecuteFalse(callable $_function): StandardTask
+    {
+        $this->functionWhenExecuteFalse = $_function;
+        return $this;
+    }
+
+    /**
+     * Метод добавляет аргументы к вызываемому файлу.
+     * Данные экранируются с помощью функции addslashes.
+     *
+     * @param string $_arguments Аргументы в виде строки
+     *
+     * @return StandardTask
+     */
+    public function addArgumentsAsString(string $_arguments): StandardTask
+    {
+        $this->arguments =  $_arguments;
+        return $this;
     }
 }

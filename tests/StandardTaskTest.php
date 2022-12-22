@@ -482,4 +482,48 @@ class StandardTaskTest extends TestCase
             ],
         ];
     }
+
+    /** @test */
+    public function test_setWhenExecuteTrue_withFunction_mustExecuteBeforeTheExecuteMethod(): void
+    {
+        $this->expectOutputString('setWhenExecuteTrue');
+
+        $this->standardTaskFake->setIndex()
+            ->setTitle('ScriptFake')
+            ->setExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php')
+            ->setWhenExecuteTrue(
+                function () {
+                    print('setWhenExecuteTrue');
+                }
+            )
+            ->execute();
+    }
+
+    /** @test */
+    public function test_setWhenExecuteFalse_withFunction_mustExecuteBeforeTheExecuteMethod(): void
+    {
+        $this->expectOutputString('setWhenExecuteFalse');
+
+        $this->standardTaskFake->setIndex()
+            ->setTitle('ScriptFake')
+            ->setExecutionPath('.\tests\src\fakes\ScriptReturn5Fake.php')
+            ->setWhenExecuteFalse(
+                function () {
+                    print('setWhenExecuteFalse');
+                }
+            )
+            ->execute();
+    }
+
+    /** @test */
+    public function test_addArgumentsAsString_withAStringOfArguments_shouldOutputTheSpecifiedMessage(): void
+    {
+        $result = $this->standardTaskFake->setIndex()
+            ->setTitle('ScriptFake')
+            ->setExecutionPath('.\tests\src\fakes\ScriptReturn1or0Fake.php')
+            ->addArgumentsAsString('ScriptReturn1or0Fake.php')
+            ->execute();
+
+        $this->assertEquals(true, $result);
+    }
 }

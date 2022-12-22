@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\GitScripts;
 
+use phpDocumentor\Reflection\Types\Never_;
 use vadimcontenthunter\GitScripts\exception\GitScriptsException;
 use vadimcontenthunter\GitScripts\interfaces\ObjectTask;
 
@@ -58,23 +59,6 @@ class Tasks
     }
 
     /**
-     * Метод запускает список задач на выполнение.
-     *
-     * @return Tasks
-     *
-     * @throws GitScriptsException
-     */
-    public function start(): Tasks
-    {
-        foreach ($this->getTaskList() as $key => $task) {
-            if ($task instanceof ObjectTask) {
-                $task->execute();
-            }
-        }
-        return $this;
-    }
-
-    /**
      * Метод возвращает наименование для задачи.
      *
      * @return array<ObjectTask>
@@ -89,5 +73,35 @@ class Tasks
             }
         }
         return $this->taskList;
+    }
+
+    /**
+     * Метод запускает список задач на выполнение.
+     *
+     * @return bool
+     *
+     * @throws GitScriptsException
+     */
+    public function start(): bool
+    {
+        foreach ($this->getTaskList() as $key => $task) {
+            if ($task instanceof ObjectTask && !$task->execute()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Выполняет пользовательскую функцию с результатом выполнения метода start
+     *
+     * @param callable $_function Функция, которая будет выполнена после выполнения метода start.
+     *                            В качестве аргумента принимает результат выполнения метола start.
+     *
+     * @return void
+     */
+    public function result(callable $_function): void
+    {
+        $_function($this->start());
     }
 }

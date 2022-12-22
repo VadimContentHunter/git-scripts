@@ -407,4 +407,54 @@ class TasksTest extends TestCase
             ]
         ];
     }
+
+    /**
+     * @test
+     * @dataProvider providerResult
+     *
+     * @param array<ObjectTask> $taskList Список задач который будет добавлен
+     * @param bool $expectableResult Ожидаемый результат
+     *
+     * @return void
+     */
+    public function test_result_withFunction_shouldChangeTheExternalVariable(
+        array $taskList,
+        bool $expectableResult
+    ): void {
+        $testResult = null;
+        $this->tasksFake->fakeSetTaskList($taskList);
+        $this->tasksFake->result(function (bool $result) use (&$testResult) {
+            if ($result) {
+                $testResult = true;
+            } else {
+                $testResult = false;
+            }
+        });
+
+        $this->assertEquals($expectableResult, $testResult);
+    }
+
+    public function providerResult(): array
+    {
+        return [
+            'Test 1' => [
+                [
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('1')
+                        ->fakeSetParameterTitle('Task 1')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php'),
+                ],
+                true,
+            ],
+            'Test 2' => [
+                [
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('1')
+                        ->fakeSetParameterTitle('Task 1')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn5Fake.php'),
+                ],
+                false,
+            ],
+        ];
+    }
 }
