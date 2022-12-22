@@ -60,13 +60,18 @@ class Tasks
     /**
      * Метод запускает список задач на выполнение.
      *
-     * @return array<ObjectTask>
+     * @return Tasks
      *
      * @throws GitScriptsException
      */
-    public function start(): array
+    public function start(): Tasks
     {
-        return $this->getTaskList();
+        foreach ($this->getTaskList() as $key => $task) {
+            if ($task instanceof ObjectTask) {
+                $task->execute();
+            }
+        }
+        return $this;
     }
 
     /**
