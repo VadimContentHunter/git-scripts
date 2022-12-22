@@ -48,11 +48,20 @@ class StandardTask implements ObjectTask
     protected string $executionStatus = '';
 
     /**
-     * Хранит callback функцию. По умолчанию null.
+     * Хранит callback функцию, которая будет выполняться,
+     * если метод execute будет возвращать true. По умолчанию null.
      *
      * @var \Closure|null
      */
     protected ?\Closure $functionWhenExecuteTrue = null;
+
+    /**
+     * Хранит callback функцию, которая будет выполняться,
+     * если метод execute будет возвращать false. По умолчанию null.
+     *
+     * @var \Closure|null
+     */
+    protected ?\Closure $functionWhenExecuteFalse = null;
 
     /**
      * Saves the initialization of the LoggerInterface
@@ -265,7 +274,6 @@ class StandardTask implements ObjectTask
             if ($this->functionWhenExecuteTrue !== null) {
                 $this->functionWhenExecuteTrue->call($this);
             }
-
             return true;
         }
 
@@ -276,6 +284,11 @@ class StandardTask implements ObjectTask
                 $this->loggerInterface->debug(implode(' \\n ', $output));
             } else {
                 $this->loggerInterface->warning($headString . 'Была выполнена, с ошибкой. Сообщения от задачи нету!');
+            }
+
+            // вызов функции перед возвратом результата, если не null
+            if ($this->functionWhenExecuteTrue !== null) {
+                $this->functionWhenExecuteTrue->call($this);
             }
             return false;
         }
@@ -288,6 +301,10 @@ class StandardTask implements ObjectTask
             $this->loggerInterface->error($headString . 'Была не выполнена. Сообщения от задачи нету!');
         }
 
+        // вызов функции перед возвратом результата, если не null
+        if ($this->functionWhenExecuteTrue !== null) {
+            $this->functionWhenExecuteTrue->call($this);
+        }
         return false;
     }
 
@@ -319,6 +336,7 @@ class StandardTask implements ObjectTask
      */
     public function setWhenExecuteFalse(callable $_function): StandardTask
     {
+        $this->functionWhenExecuteFalse = $_function;
         return $this;
     }
 }
