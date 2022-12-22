@@ -339,4 +339,16 @@ class StandardTask implements ObjectTask
         $this->functionWhenExecuteFalse = $_function;
         return $this;
     }
+
+    /**
+     * Метод добавляет аргументы к вызываемому файлу.
+     *
+     * @param string $arguments Аргументы в виде строки
+     *
+     * @return StandardTask
+     */
+    public function addArgumentsAsString(string $arguments): StandardTask
+    {
+        return $this;
+    }
 }
