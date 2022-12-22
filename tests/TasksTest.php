@@ -6,12 +6,10 @@ namespace vadimcontenthunter\GitScripts\Tests;
 
 use Psr\Log\NullLogger;
 use PHPUnit\Framework\TestCase;
-use vadimcontenthunter\GitScripts\Tasks;
-use vadimcontenthunter\GitScripts\TaskProgressLevel;
 use vadimcontenthunter\GitScripts\interfaces\ObjectTask;
+use vadimcontenthunter\GitScripts\TaskProgressLevel;
 use vadimcontenthunter\GitScripts\Tests\src\fakes\TasksFake;
 use vadimcontenthunter\GitScripts\exception\GitScriptsException;
-use vadimcontenthunter\GitScripts\Tests\src\fakes\ObjectTaskFake;
 use vadimcontenthunter\GitScripts\Tests\src\fakes\StandardTaskFake;
 
 /**
@@ -223,7 +221,7 @@ class TasksTest extends TestCase
      * @test
      * @dataProvider providerGetTaskListExceptions
      *
-     * @param string $executionPath Параметр для метода
+     * @param array $taskList Параметр для метода
      * @param \Exception $expectableResult Ожидаемый результат
      */
     public function test_getTaskList_withoutParameters_shouldThrowAnException(
@@ -266,6 +264,146 @@ class TasksTest extends TestCase
                 ],
                 new GitScriptsException(),
             ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider providerStart
+     *
+     * @param array<ObjectTask> $taskList Список задач который будет добавлен
+     * @param array<ObjectTask> $expectableResult Ожидаемый результат
+     *
+     * @return void
+     */
+    public function test_start_withoutParameters_shouldChangeTheTaskList(
+        array $taskList,
+        array $expectableResult
+    ): void {
+        $this->tasksFake->fakeSetTaskList($taskList);
+        $this->tasksFake->start();
+
+        $this->assertEquals($expectableResult, $this->tasksFake->fakeGetTaskList());
+    }
+
+    public function providerStart(): array
+    {
+        return [
+            'Test 1' => [
+                [
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('1')
+                        ->fakeSetParameterTitle('Task 1')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php'),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('2')
+                        ->fakeSetParameterTitle('Task 2')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn5Fake.php'),
+                ],
+                [
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('1')
+                        ->fakeSetParameterTitle('Task 1')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php')
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::DONE),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('2')
+                        ->fakeSetParameterTitle('Task 2')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn5Fake.php')
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::ERROR),
+                ],
+            ],
+            'Test 2' => [
+                [
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('1')
+                        ->fakeSetParameterTitle('Task 1')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php'),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('2')
+                        ->fakeSetParameterTitle('Task 2')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn5Fake.php'),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('3')
+                        ->fakeSetParameterTitle('Task 3')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php')
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::DONE),
+                ],
+                [
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('1')
+                        ->fakeSetParameterTitle('Task 1')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php')
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::DONE),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('2')
+                        ->fakeSetParameterTitle('Task 2')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn5Fake.php')
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::ERROR),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('3')
+                        ->fakeSetParameterTitle('Task 3')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php')
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::DONE),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider providerStartExceptions
+     *
+     * @param array $taskList Параметр для метода
+     * @param \Exception $expectableResult Ожидаемый результат
+     */
+    public function test_start_withoutParameters_shouldThrowAnException(
+        array $taskList,
+        \Exception $expectableResult
+    ): void {
+        $this->expectException($expectableResult::class);
+
+        $this->tasksFake->fakeSetTaskList($taskList);
+        $this->tasksFake->start();
+    }
+
+    public function providerStartExceptions(): array
+    {
+        return [
+            'Test 1' => [
+                [
+                    'test'
+                ],
+                new GitScriptsException(),
+            ],
+            'Test 2' => [
+                [
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('1')
+                        ->fakeSetParameterTitle('Task 1')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php'),
+                    'test'
+                ],
+                new GitScriptsException(),
+            ],
+            'Test 3' => [
+                [
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('1')
+                        ->fakeSetParameterTitle('Task 1')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php'),
+                ],
+                new GitScriptsException(),
+            ],
+            'Test 4' => [
+                [
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('1')
+                        ->fakeSetParameterTitle('Task 1')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\NotFoundFile.php'),
+                ],
+                new GitScriptsException(),
+            ]
         ];
     }
 }
