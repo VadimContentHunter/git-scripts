@@ -9,6 +9,7 @@ use stdClass;
 use vadimcontenthunter\GitScripts\TaskProgressLevel;
 use vadimcontenthunter\GitScripts\interfaces\ObjectTask;
 use vadimcontenthunter\GitScripts\exception\GitScriptsException;
+use vadimcontenthunter\GitScripts\Tasks;
 
 /**
  * Реализация стандартной задачи
@@ -280,7 +281,7 @@ class StandardTask implements ObjectTask
 
             // вызов функции перед возвратом результата, если не null
             if ($this->functionWhenExecuteTrue !== null) {
-                $this->functionWhenExecuteTrue->call($this);
+                $this->functionWhenExecuteTrue->call($this, $this);
             }
             return true;
         }
@@ -296,7 +297,7 @@ class StandardTask implements ObjectTask
 
             // вызов функции перед возвратом результата, если не null
             if ($this->functionWhenExecuteFalse !== null) {
-                $this->functionWhenExecuteFalse->call($this);
+                $this->functionWhenExecuteFalse->call($this, $this);
             }
             return false;
         }
@@ -311,7 +312,7 @@ class StandardTask implements ObjectTask
 
         // вызов функции перед возвратом результата, если не null
         if ($this->functionWhenExecuteFalse !== null) {
-            $this->functionWhenExecuteFalse->call($this);
+            $this->functionWhenExecuteFalse->call($this, $this);
         }
         return false;
     }
@@ -320,6 +321,7 @@ class StandardTask implements ObjectTask
      * Выполняется если метод execute возвращает значение true
      * С начало выполниться функция установленная в этом методе,
      * потом вернется значение execute.
+     * В качестве аргумента, функция принимает текущий объект.
      * Результат функции будет не обработан.
      *
      * @param callable $_function Функция, которая будет выполнена
@@ -336,6 +338,7 @@ class StandardTask implements ObjectTask
      * Выполняется если метод execute возвращает значение false
      * С начало выполниться функция установленная в этом методе,
      * потом вернется значение execute.
+     * В качестве аргумента, функция принимает текущий объект.
      * Результат функции будет не обработан.
      *
      * @param callable $_function Функция, которая будет выполнена
