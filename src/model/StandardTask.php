@@ -158,64 +158,6 @@ class StandardTask implements ObjectTask
     }
 
     /**
-     * Метод выполняет текущую задачу.
-     *
-     * @return bool Возвращает в случае успеха true, иначе false.
-     *              Вернет true даже если задача была выполнена но не с нулевым кодом завершения.
-     *
-     * @throws GitScriptsException
-     */
-    public function execute(): bool
-    {
-        $index = $this->getIndex();
-        $title = $this->getTitle();
-        $executionPath = $this->getExecutionPath();
-        $executionStatus = $this->getExecutionStatus();
-        $output = null;
-        $retval = null;
-
-        $headString =  'Задача [ #' . $index . ' ' . $title . ' ] > ';
-
-        if ($executionStatus !== TaskProgressLevel::WAITING) {
-            $this->loggerInterface->info($headString . 'Нет в списках на ожидание.');
-            return false;
-        }
-
-        $this->executionStatus = TaskProgressLevel::PROGRESS;
-        $this->loggerInterface->info($headString . 'Выполняется . . .');
-        if (exec('php ' . $executionPath, $output, $retval) === false) {
-            throw new GitScriptsException("An unknown error occurred while executing.");
-        }
-
-        if ($retval === 0) {
-            $this->loggerInterface->info($headString . 'Была выполнена, успешно.');
-            $this->executionStatus = TaskProgressLevel::DONE;
-            return true;
-        }
-
-        if ($retval !== 0) {
-            $this->executionStatus = TaskProgressLevel::ERROR;
-            if (count($output) !== 0 && $output !== null) {
-                $this->loggerInterface->warning($headString . 'Была выполнена, с ошибкой.');
-                $this->loggerInterface->debug(implode(' \\n ', $output));
-            } else {
-                $this->loggerInterface->warning($headString . 'Была выполнена, с ошибкой. Сообщения от задачи нету!');
-            }
-            return false;
-        }
-
-        $this->executionStatus = TaskProgressLevel::NOT_IMPLEMENTED;
-        if (count($output) !== 0 && $output !== null) {
-            $this->loggerInterface->error($headString . 'Была не выполнена.');
-            $this->loggerInterface->debug(implode(' \\n ', $output));
-        } else {
-            $this->loggerInterface->error($headString . 'Была не выполнена. Сообщения от задачи нету!');
-        }
-
-        return false;
-    }
-
-    /**
      * Метод возвращает статус выполнения задачи.
      *
      * @return string
@@ -275,5 +217,93 @@ class StandardTask implements ObjectTask
         }
 
         return $this->executionPath;
+    }
+
+    /**
+     * Метод выполняет текущую задачу.
+     *
+     * @return bool Возвращает в случае успеха true, иначе false.
+     *              Вернет true даже если задача была выполнена но не с нулевым кодом завершения.
+     *
+     * @throws GitScriptsException
+     */
+    public function execute(): bool
+    {
+        $index = $this->getIndex();
+        $title = $this->getTitle();
+        $executionPath = $this->getExecutionPath();
+        $executionStatus = $this->getExecutionStatus();
+        $output = null;
+        $retval = null;
+
+        $headString =  'Задача [ #' . $index . ' ' . $title . ' ] > ';
+
+        if ($executionStatus !== TaskProgressLevel::WAITING) {
+            $this->loggerInterface->info($headString . 'Нет в списках на ожидание.');
+            return false;
+        }
+
+        $this->executionStatus = TaskProgressLevel::PROGRESS;
+        $this->loggerInterface->info($headString . 'Выполняется . . .');
+        if (exec('php ' . $executionPath, $output, $retval) === false) {
+            throw new GitScriptsException("An unknown error occurred while executing.");
+        }
+
+        if ($retval === 0) {
+            $this->loggerInterface->info($headString . 'Была выполнена, успешно.');
+            $this->executionStatus = TaskProgressLevel::DONE;
+            return true;
+        }
+
+        if ($retval !== 0) {
+            $this->executionStatus = TaskProgressLevel::ERROR;
+            if (count($output) !== 0 && $output !== null) {
+                $this->loggerInterface->warning($headString . 'Была выполнена, с ошибкой.');
+                $this->loggerInterface->debug(implode(' \\n ', $output));
+            } else {
+                $this->loggerInterface->warning($headString . 'Была выполнена, с ошибкой. Сообщения от задачи нету!');
+            }
+            return false;
+        }
+
+        $this->executionStatus = TaskProgressLevel::NOT_IMPLEMENTED;
+        if (count($output) !== 0 && $output !== null) {
+            $this->loggerInterface->error($headString . 'Была не выполнена.');
+            $this->loggerInterface->debug(implode(' \\n ', $output));
+        } else {
+            $this->loggerInterface->error($headString . 'Была не выполнена. Сообщения от задачи нету!');
+        }
+
+        return false;
+    }
+
+    /**
+     * Выполняется если метод execute возвращает значение true
+     * С начало выполниться функция установленная в этом методе,
+     * потом вернется значение execute.
+     * Результат функции будет не обработан.
+     *
+     * @param callable $_function Функция, которая будет выполнена
+     *
+     * @return StandardTask
+     */
+    public function setWhenExecuteTrue(callable $_function): StandardTask
+    {
+        return $this;
+    }
+
+    /**
+     * Выполняется если метод execute возвращает значение false
+     * С начало выполниться функция установленная в этом методе,
+     * потом вернется значение execute.
+     * Результат функции будет не обработан.
+     *
+     * @param callable $_function Функция, которая будет выполнена
+     *
+     * @return StandardTask
+     */
+    public function setWhenExecuteFalse(callable $_function): StandardTask
+    {
+        return $this;
     }
 }
