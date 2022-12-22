@@ -64,6 +64,13 @@ class StandardTask implements ObjectTask
     protected ?\Closure $functionWhenExecuteFalse = null;
 
     /**
+     * Хранит в строке аргументы для запуска файла
+     *
+     * @var string
+     */
+    protected string $arguments = '';
+
+    /**
      * Saves the initialization of the LoggerInterface
      *
      * @var LoggerInterface
@@ -253,6 +260,7 @@ class StandardTask implements ObjectTask
         $output = null;
         $retval = null;
 
+        // Начало строки для логирования.
         $headString =  'Задача [ #' . $index . ' ' . $title . ' ] > ';
 
         if ($executionStatus !== TaskProgressLevel::WAITING) {
@@ -262,7 +270,7 @@ class StandardTask implements ObjectTask
 
         $this->executionStatus = TaskProgressLevel::PROGRESS;
         $this->loggerInterface->info($headString . 'Выполняется . . .');
-        if (exec('php ' . $executionPath, $output, $retval) === false) {
+        if (exec('php ' . $executionPath . ' ' . $this->arguments, $output, $retval) === false) {
             throw new GitScriptsException("An unknown error occurred while executing.");
         }
 
@@ -342,13 +350,15 @@ class StandardTask implements ObjectTask
 
     /**
      * Метод добавляет аргументы к вызываемому файлу.
+     * Данные экранируются с помощью функции addslashes.
      *
-     * @param string $arguments Аргументы в виде строки
+     * @param string $_arguments Аргументы в виде строки
      *
      * @return StandardTask
      */
-    public function addArgumentsAsString(string $arguments): StandardTask
+    public function addArgumentsAsString(string $_arguments): StandardTask
     {
+        $this->arguments =  $_arguments;
         return $this;
     }
 }
