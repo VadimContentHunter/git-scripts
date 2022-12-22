@@ -423,7 +423,7 @@ class TasksTest extends TestCase
     ): void {
         $testResult = null;
         $this->tasksFake->fakeSetTaskList($taskList);
-        $this->tasksFake->result(function (bool $result) use ($testResult) {
+        $this->tasksFake->result(function (bool $result) use (&$testResult) {
             if ($result) {
                 $testResult = true;
             } else {
