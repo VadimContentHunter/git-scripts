@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\GitScripts\model;
 
-use vadimcontenthunter\GitScripts\exception\GitScriptsException;
-use vadimcontenthunter\GitScripts\interfaces\ObjectTask;
+use Psr\Log\LoggerInterface;
 use vadimcontenthunter\GitScripts\TaskProgressLevel;
+use vadimcontenthunter\GitScripts\interfaces\ObjectTask;
+use vadimcontenthunter\GitScripts\exception\GitScriptsException;
 
 /**
  * Реализация стандартной задачи
@@ -46,10 +47,20 @@ class StandardTask implements ObjectTask
     protected string $executionStatus = '';
 
     /**
-     * Initializes the StandardTask
+     * Saves the initialization of the LoggerInterface
+     *
+     * @var LoggerInterface
      */
-    public function __construct()
+    protected LoggerInterface $loggerInterface;
+
+    /**
+     * Initializes the StandardTask
+     *
+     * @param LoggerInterface $_loggerInterface Logger interface
+     */
+    public function __construct(LoggerInterface $_loggerInterface)
     {
+        $this->loggerInterface = $_loggerInterface;
         $this->executionStatus = TaskProgressLevel::WAITING;
     }
 
@@ -166,45 +177,39 @@ class StandardTask implements ObjectTask
         $headString = PHP_EOL . 'Задача [ #' . $index . ' ' . $title . ' ] > ';
 
         if ($executionStatus !== TaskProgressLevel::WAITING) {
-            print_r($headString . 'Нет в списках на ожидание.');
-            print_r(PHP_EOL);
+            $this->loggerInterface->info($headString . 'Нет в списках на ожидание.' . PHP_EOL);
             return false;
         }
 
         $this->executionStatus = TaskProgressLevel::PROGRESS;
-        print_r($headString . 'Выполняется . . .');
+        $this->loggerInterface->info($headString . 'Выполняется . . .' . PHP_EOL);
         if (exec('php ' . $executionPath, $output, $retval) === false) {
             throw new GitScriptsException("An unknown error occurred while executing.");
         }
 
         if ($retval === 0) {
-            print_r($headString . 'Была выполнена, успешно.');
-            print_r(PHP_EOL);
+            $this->loggerInterface->info($headString . 'Была выполнена, успешно.' . PHP_EOL);
             $this->executionStatus = TaskProgressLevel::DONE;
             return true;
         }
 
         if ($retval !== 0) {
-            print_r($headString . 'Была выполнена, с ошибкой.');
             $this->executionStatus = TaskProgressLevel::ERROR;
             if (count($output) !== 0 && $output !== null) {
-                print_r($output);
-                print_r(PHP_EOL);
+                $this->loggerInterface->warning($headString . 'Была выполнена, с ошибкой.' . PHP_EOL);
+                $this->loggerInterface->debug(implode(PHP_EOL, $output));
             } else {
-                print_r($headString . 'Сообщения от задачи нету!');
-                print_r(PHP_EOL);
+                $this->loggerInterface->warning($headString . 'Была выполнена, с ошибкой.' . PHP_EOL . 'Сообщения от задачи нету!' . PHP_EOL);
             }
             return false;
         }
 
-        print_r($headString . 'Была не выполнена.');
         $this->executionStatus = TaskProgressLevel::NOT_IMPLEMENTED;
         if (count($output) !== 0 && $output !== null) {
-            print_r($output);
-            print_r(PHP_EOL);
+            $this->loggerInterface->error($headString . 'Была не выполнена.' . PHP_EOL);
+            $this->loggerInterface->debug(implode(PHP_EOL, $output));
         } else {
-            print_r($headString . 'сообщения от задачи нету!');
-            print_r(PHP_EOL);
+            $this->loggerInterface->error($headString . 'Была не выполнена.' . PHP_EOL . 'Сообщения от задачи нету!' . PHP_EOL);
         }
 
         return false;

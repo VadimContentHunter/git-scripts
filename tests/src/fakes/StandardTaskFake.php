@@ -60,11 +60,13 @@ class StandardTaskFake extends StandardTask
      *
      * @param string $_index
      *
-     * @return void
+     * @return StandardTaskFake
      */
-    public function fakeSetParameterIndex(string $_index): void
+    public function fakeSetParameterIndex(string $_index): StandardTaskFake
     {
         $this->index = $_index;
+
+        return $this;
     }
 
     /**
@@ -72,11 +74,13 @@ class StandardTaskFake extends StandardTask
      *
      * @param string $_title
      *
-     * @return void
+     * @return StandardTaskFake
      */
-    public function fakeSetParameterTitle(string $_title): void
+    public function fakeSetParameterTitle(string $_title): StandardTaskFake
     {
         $this->title = $_title;
+
+        return $this;
     }
 
     /**
@@ -84,11 +88,13 @@ class StandardTaskFake extends StandardTask
      *
      * @param string $_executionStatus
      *
-     * @return void
+     * @return StandardTaskFake
      */
-    public function fakeSetParameterExecutionStatus(string $_executionStatus): void
+    public function fakeSetParameterExecutionStatus(string $_executionStatus): StandardTaskFake
     {
         $this->executionStatus = $_executionStatus;
+
+        return $this;
     }
 
     /**
@@ -96,10 +102,12 @@ class StandardTaskFake extends StandardTask
      *
      * @param string $_executionPath
      *
-     * @return void
+     * @return StandardTaskFake
      */
-    public function fakeSetParameterExecutionPath(string $_executionPath): void
+    public function fakeSetParameterExecutionPath(string $_executionPath): StandardTaskFake
     {
         $this->executionPath = $_executionPath;
+
+        return $this;
     }
 }

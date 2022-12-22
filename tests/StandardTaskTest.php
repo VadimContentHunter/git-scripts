@@ -5,18 +5,26 @@ declare(strict_types=1);
 namespace vadimcontenthunter\GitScripts\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use vadimcontenthunter\GitScripts\TaskProgressLevel;
 use vadimcontenthunter\GitScripts\exception\GitScriptsException;
 use vadimcontenthunter\GitScripts\Tests\src\fakes\ObjectTaskFake;
 use vadimcontenthunter\GitScripts\Tests\src\fakes\StandardTaskFake;
 
+/**
+ * Тесты для класса StandardTaskTest
+ *
+ * @package   GitScripts_Tests
+ * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
+ * @copyright (c) Vadim Volkovskyi 2022
+ */
 class StandardTaskTest extends TestCase
 {
     protected StandardTaskFake $standardTaskFake;
 
     public function setUp(): void
     {
-        $this->standardTaskFake = new StandardTaskFake();
+        $this->standardTaskFake = new StandardTaskFake(new NullLogger());
     }
 
     /** @test */
