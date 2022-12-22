@@ -287,8 +287,8 @@ class StandardTask implements ObjectTask
             }
 
             // вызов функции перед возвратом результата, если не null
-            if ($this->functionWhenExecuteTrue !== null) {
-                $this->functionWhenExecuteTrue->call($this);
+            if ($this->functionWhenExecuteFalse !== null) {
+                $this->functionWhenExecuteFalse->call($this);
             }
             return false;
         }
@@ -302,8 +302,8 @@ class StandardTask implements ObjectTask
         }
 
         // вызов функции перед возвратом результата, если не null
-        if ($this->functionWhenExecuteTrue !== null) {
-            $this->functionWhenExecuteTrue->call($this);
+        if ($this->functionWhenExecuteFalse !== null) {
+            $this->functionWhenExecuteFalse->call($this);
         }
         return false;
     }

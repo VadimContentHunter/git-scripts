@@ -506,7 +506,7 @@ class StandardTaskTest extends TestCase
 
         $this->standardTaskFake->setIndex()
             ->setTitle('ScriptFake')
-            ->setExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php')
+            ->setExecutionPath('.\tests\src\fakes\ScriptReturn5Fake.php')
             ->setWhenExecuteFalse(
                 function () {
                     print('setWhenExecuteFalse');
