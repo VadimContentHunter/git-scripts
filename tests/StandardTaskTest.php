@@ -405,11 +405,11 @@ class StandardTaskTest extends TestCase
         return [
             'Script Return 5' => [
                 '.\tests\src\fakes\ScriptReturn5Fake.php',
-                false,
+                5,
             ],
             'Script Return 0' => [
                 '.\tests\src\fakes\ScriptReturn0Fake.php',
-                true,
+                0,
             ],
         ];
     }
