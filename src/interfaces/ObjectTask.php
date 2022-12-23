@@ -51,11 +51,11 @@ interface ObjectTask
     /**
      * Метод выполняет текущую задачу.
      *
-     * @return bool Возвращает в случае успеха true, иначе false.
+     * @return int Возвращает значение которое вернул скрипт..
      *
      * @throws GitScriptsException
      */
-    public function execute(): bool;
+    public function execute(): int;
 
     /**
      * Метод возвращает статус выполнения задачи.

@@ -247,12 +247,14 @@ class StandardTask implements ObjectTask
     /**
      * Метод выполняет текущую задачу.
      *
-     * @return bool Возвращает в случае успеха true, иначе false.
-     *              Вернет true даже если задача была выполнена но не с нулевым кодом завершения.
+     * @return int Возвращает значение которое вернул скрипт. Вернет:
+     *             - -1 - в случае если задача не обладает статусом WAITING
+     *             - -2 - в случае если скрипт не вернет значение
+     *             - -3 - в случае если по какой либо причине скрипт не выполниться
      *
      * @throws GitScriptsException
      */
-    public function execute(): bool
+    public function execute(): int
     {
         $index = $this->getIndex();
         $title = $this->getTitle();
@@ -266,7 +268,7 @@ class StandardTask implements ObjectTask
 
         if ($executionStatus !== TaskProgressLevel::WAITING) {
             $this->loggerInterface->info($headString . 'Нет в списках на ожидание.');
-            return false;
+            return -1;
         }
 
         $this->executionStatus = TaskProgressLevel::PROGRESS;
@@ -283,7 +285,7 @@ class StandardTask implements ObjectTask
             if ($this->functionWhenExecuteTrue !== null) {
                 $this->functionWhenExecuteTrue->call($this, $this);
             }
-            return true;
+            return $retval;
         }
 
         if ($retval !== 0) {
@@ -299,7 +301,7 @@ class StandardTask implements ObjectTask
             if ($this->functionWhenExecuteFalse !== null) {
                 $this->functionWhenExecuteFalse->call($this, $this);
             }
-            return false;
+            return $retval ?? -2;
         }
 
         $this->executionStatus = TaskProgressLevel::NOT_IMPLEMENTED;
@@ -314,7 +316,7 @@ class StandardTask implements ObjectTask
         if ($this->functionWhenExecuteFalse !== null) {
             $this->functionWhenExecuteFalse->call($this, $this);
         }
-        return false;
+        return $retval ?? -3;
     }
 
     /**
