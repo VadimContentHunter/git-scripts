@@ -389,9 +389,9 @@ class StandardTaskTest extends TestCase
      * @dataProvider providerExecute
      *
      * @param string $title Параметр для метода
-     * @param bool $expectableResult Ожидаемый результат
+     * @param mixed $expectableResult Ожидаемый результат
      */
-    public function test_execute_withoutParameters_shouldReturnTrue(string $executionPath, bool $expectableResult): void
+    public function test_execute_withoutParameters_shouldReturnTrue(string $executionPath, mixed $expectableResult): void
     {
         $this->standardTaskFake->setIndex();
         $this->standardTaskFake->setTitle('ScriptFake');
@@ -524,6 +524,6 @@ class StandardTaskTest extends TestCase
             ->addArgumentsAsString('ScriptReturn1or0Fake.php')
             ->execute();
 
-        $this->assertEquals(true, $result);
+        $this->assertEquals(0, $result);
     }
 }
