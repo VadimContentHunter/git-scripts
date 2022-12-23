@@ -134,7 +134,7 @@
         ->start() ? exit(0) : exit(1);
     ```
 
-    ![результат работы](readme\r1.PNG)
+    ![результат работы](https://github.com/VadimContentHunter/git-scripts/blob/ac0fef171368f3d663174e5a222e96d8f4183e16/readme/r1.PNG)
 
     Можно продолжить выполнения основной цыпочки задачи, если в примере выше заменить задачу `phpcs 1` на
 
@@ -152,4 +152,4 @@
     exit(5);
     ```
 
-    ![результат работы](readme\r2.PNG)
+    ![результат работы](https://github.com/VadimContentHunter/git-scripts/blob/ac0fef171368f3d663174e5a222e96d8f4183e16/readme/r2.PNG)
