@@ -50,19 +50,11 @@ class StandardTask implements ObjectTask
 
     /**
      * Хранит callback функцию, которая будет выполняться,
-     * если метод execute будет возвращать true. По умолчанию null.
+     * со значением которое вернет метод execute. По умолчанию null.
      *
      * @var \Closure|null
      */
-    protected ?\Closure $functionWhenExecuteTrue = null;
-
-    /**
-     * Хранит callback функцию, которая будет выполняться,
-     * если метод execute будет возвращать false. По умолчанию null.
-     *
-     * @var \Closure|null
-     */
-    protected ?\Closure $functionWhenExecuteFalse = null;
+    protected ?\Closure $functionWhenExecuteValue = null;
 
     /**
      * Хранит в строке аргументы для запуска файла
@@ -246,8 +238,10 @@ class StandardTask implements ObjectTask
 
     /**
      * Метод выполняет текущую задачу.
+     * Меняется статус задачи.
      *
      * @return int Возвращает значение которое вернул скрипт. Вернет:
+     *             - 0 - в случае успешного выполнения
      *             - -1 - в случае если задача не обладает статусом WAITING
      *             - -2 - в случае если скрипт не вернет значение
      *             - -3 - в случае если по какой либо причине скрипт не выполниться
@@ -271,23 +265,26 @@ class StandardTask implements ObjectTask
             return -1;
         }
 
+        // выполнение скрипта
         $this->executionStatus = TaskProgressLevel::PROGRESS;
         $this->loggerInterface->info($headString . 'Выполняется . . .');
         if (exec('php ' . $executionPath . ' ' . $this->arguments, $output, $retval) === false) {
             throw new GitScriptsException("An unknown error occurred while executing.");
         }
 
+        // Если результат равен 0, успешное выполнение
         if ($retval === 0) {
             $this->loggerInterface->info($headString . 'Была выполнена, успешно.');
             $this->executionStatus = TaskProgressLevel::DONE;
 
             // вызов функции перед возвратом результата, если не null
-            if ($this->functionWhenExecuteTrue !== null) {
-                $this->functionWhenExecuteTrue->call($this, $this);
+            if ($this->functionWhenExecuteValue !== null) {
+                $this->functionWhenExecuteValue->call($this, $this, $retval);
             }
             return $retval;
         }
 
+        // Если результат не успешный
         if ($retval !== 0) {
             $this->executionStatus = TaskProgressLevel::ERROR;
             if (count($output) !== 0 && $output !== null) {
@@ -298,12 +295,13 @@ class StandardTask implements ObjectTask
             }
 
             // вызов функции перед возвратом результата, если не null
-            if ($this->functionWhenExecuteFalse !== null) {
-                $this->functionWhenExecuteFalse->call($this, $this);
+            if ($this->functionWhenExecuteValue !== null) {
+                $this->functionWhenExecuteValue->call($this, $this, $retval);
             }
             return $retval ?? -2;
         }
 
+        // Если задача будет не выполнена
         $this->executionStatus = TaskProgressLevel::NOT_IMPLEMENTED;
         if (count($output) !== 0 && $output !== null) {
             $this->loggerInterface->error($headString . 'Была не выполнена.');
@@ -313,43 +311,26 @@ class StandardTask implements ObjectTask
         }
 
         // вызов функции перед возвратом результата, если не null
-        if ($this->functionWhenExecuteFalse !== null) {
-            $this->functionWhenExecuteFalse->call($this, $this);
+        if ($this->functionWhenExecuteValue !== null) {
+            $this->functionWhenExecuteValue->call($this, $this, null);
         }
         return $retval ?? -3;
     }
 
     /**
-     * Выполняется если метод execute возвращает значение true
+     * Выполняется после выполнения метода execute.
      * С начало выполниться функция установленная в этом методе,
      * потом вернется значение execute.
-     * В качестве аргумента, функция принимает текущий объект.
-     * Результат функции будет не обработан.
+     * В качестве 1 аргумента, функция принимает текущий объект, а 2 результат выполнения метода execute
+     * Результат пользовательской функции будет не обработан.
      *
-     * @param callable $_function Функция, которая будет выполнена
+     * @param callable $_function Функция, которая будет выполнена. `function(ObjectTask $thisTask, int $result): void`
      *
      * @return StandardTask
      */
-    public function setWhenExecuteTrue(callable $_function): StandardTask
+    public function setWhenExecuteValue(callable $_function): StandardTask
     {
-        $this->functionWhenExecuteTrue = $_function;
-        return $this;
-    }
-
-    /**
-     * Выполняется если метод execute возвращает значение false
-     * С начало выполниться функция установленная в этом методе,
-     * потом вернется значение execute.
-     * В качестве аргумента, функция принимает текущий объект.
-     * Результат функции будет не обработан.
-     *
-     * @param callable $_function Функция, которая будет выполнена
-     *
-     * @return StandardTask
-     */
-    public function setWhenExecuteFalse(callable $_function): StandardTask
-    {
-        $this->functionWhenExecuteFalse = $_function;
+        $this->functionWhenExecuteValue = $_function;
         return $this;
     }
 
