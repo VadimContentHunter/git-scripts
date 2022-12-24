@@ -413,18 +413,18 @@ class TasksTest extends TestCase
      * @dataProvider providerResult
      *
      * @param array<ObjectTask> $taskList Список задач который будет добавлен
-     * @param bool $expectableResult Ожидаемый результат
+     * @param mixed $expectableResult Ожидаемый результат
      *
      * @return void
      */
     public function test_result_withFunction_shouldChangeTheExternalVariable(
         array $taskList,
-        bool $expectableResult
+        mixed $expectableResult
     ): void {
         $testResult = null;
         $this->tasksFake->fakeSetTaskList($taskList);
-        $this->tasksFake->result(function (bool $result) use (&$testResult) {
-            if ($result) {
+        $this->tasksFake->result(function ($thisTask, int $result) use (&$testResult) {
+            if ($result === 0) {
                 $testResult = true;
             } else {
                 $testResult = false;
@@ -445,15 +445,6 @@ class TasksTest extends TestCase
                         ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php'),
                 ],
                 true,
-            ],
-            'Test 2' => [
-                [
-                    (new StandardTaskFake(new NullLogger()))
-                        ->fakeSetParameterIndex('1')
-                        ->fakeSetParameterTitle('Task 1')
-                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn5Fake.php'),
-                ],
-                false,
             ],
         ];
     }
