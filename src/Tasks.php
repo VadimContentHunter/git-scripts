@@ -82,26 +82,33 @@ class Tasks
      *
      * @throws GitScriptsException
      */
-    public function start(): bool
+    public function start(): void
     {
         foreach ($this->getTaskList() as $key => $task) {
-            if ($task instanceof ObjectTask && !$task->execute()) {
-                return false;
+            if ($task instanceof ObjectTask) {
+                $task->execute();
+            } else {
+                throw new GitScriptsException("Incorrect array element type, must be an ObjectTask");
             }
         }
-        return true;
     }
 
     /**
-     * Выполняет пользовательскую функцию с результатом выполнения метода start
+     * Выполняет пользовательскую функцию к каждой задачи
      *
-     * @param callable $_function Функция, которая будет выполнена после выполнения метода start.
+     * @param callable $_function Функция, которая будет выполнена после выполнения задачи.
      *                            В качестве аргумента принимает результат выполнения метола start.
      *
      * @return void
      */
     public function result(callable $_function): void
     {
-        $_function($this->start());
+        foreach ($this->getTaskList() as $key => $task) {
+            if ($task instanceof ObjectTask) {
+                $_function($this, $task->execute());
+            } else {
+                throw new GitScriptsException("Incorrect array element type, must be an ObjectTask");
+            }
+        }
     }
 }
