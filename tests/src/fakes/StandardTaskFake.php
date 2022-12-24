@@ -56,6 +56,16 @@ class StandardTaskFake extends StandardTask
     }
 
     /**
+     * Возвращает значение защищенного параметра arguments без манипуляций с ним.
+     *
+     * @return string
+     */
+    public function fakeGetParameterArguments(): string
+    {
+        return $this->arguments;
+    }
+
+    /**
      * Устанавливает напрямую значение в защищенный параметр index, без манипуляций с ним.
      *
      * @param string $_index
@@ -107,6 +117,20 @@ class StandardTaskFake extends StandardTask
     public function fakeSetParameterExecutionPath(string $_executionPath): StandardTaskFake
     {
         $this->executionPath = $_executionPath;
+
+        return $this;
+    }
+
+    /**
+     * Устанавливает напрямую значение в защищенный параметр arguments, без манипуляций с ним.
+     *
+     * @param string $_arguments
+     *
+     * @return StandardTaskFake
+     */
+    public function fakeSetParameterArguments(string $_arguments): StandardTaskFake
+    {
+        $this->arguments = $_arguments;
 
         return $this;
     }
