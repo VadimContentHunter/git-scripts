@@ -129,7 +129,7 @@
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Tasks.php"><a href="files/src-tasks.html"><abbr title="src/Tasks.php">Tasks.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">18</span>
+    <span class="phpdocumentor-element-found-in__line">17</span>
 
     </aside>
 
@@ -206,12 +206,12 @@
     <span>
                                 &nbsp;: void    </span>
 </dt>
-<dd>Выполняет пользовательскую функцию с результатом выполнения метода start</dd>
+<dd>Выполняет пользовательскую функцию к каждой задачи</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/vadimcontenthunter-GitScripts-Tasks.html#method_start">start()</a>
     <span>
-                                &nbsp;: bool    </span>
+                                &nbsp;: void    </span>
 </dt>
 <dd>Метод запускает список задач на выполнение.</dd>
 
@@ -243,7 +243,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Tasks.php"><a href="files/src-tasks.html"><abbr title="src/Tasks.php">Tasks.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">25</span>
+    <span class="phpdocumentor-element-found-in__line">24</span>
 
     </aside>
 
@@ -280,7 +280,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Tasks.php"><a href="files/src-tasks.html"><abbr title="src/Tasks.php">Tasks.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">34</span>
+    <span class="phpdocumentor-element-found-in__line">33</span>
 
     </aside>
 
@@ -323,7 +323,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Tasks.php"><a href="files/src-tasks.html"><abbr title="src/Tasks.php">Tasks.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">48</span>
+    <span class="phpdocumentor-element-found-in__line">47</span>
 
     </aside>
 
@@ -368,7 +368,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Tasks.php"><a href="files/src-tasks.html"><abbr title="src/Tasks.php">Tasks.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">68</span>
+    <span class="phpdocumentor-element-found-in__line">67</span>
 
     </aside>
 
@@ -415,11 +415,11 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Tasks.php"><a href="files/src-tasks.html"><abbr title="src/Tasks.php">Tasks.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">103</span>
+    <span class="phpdocumentor-element-found-in__line">104</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Выполняет пользовательскую функцию с результатом выполнения метода start</p>
+        <p class="phpdocumentor-summary">Выполняет пользовательскую функцию к каждой задачи</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -433,8 +433,9 @@
                 : <span class="phpdocumentor-signature__argument__return-type">callable</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Функция, которая будет выполнена после выполнения метода start.
-В качестве аргумента принимает результат выполнения метола start.</p>
+                    <section class="phpdocumentor-description"><p>Функция, которая будет выполнена после выполнения задачи.
+<code class="prettyprint">function(int $result): void</code>
+В качестве 1 аргумент результат выполнения метода execute задачи.</p>
 </section>
 
             </dd>
@@ -461,7 +462,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Tasks.php"><a href="files/src-tasks.html"><abbr title="src/Tasks.php">Tasks.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">85</span>
+    <span class="phpdocumentor-element-found-in__line">84</span>
 
     </aside>
 
@@ -469,7 +470,7 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">start</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+                    <span class="phpdocumentor-signature__name">start</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
     
     
@@ -490,7 +491,7 @@
                         </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
+    <span class="phpdocumentor-signature__response_type">void</span>
             &mdash;
         
     
