@@ -389,9 +389,9 @@ class StandardTaskTest extends TestCase
      * @dataProvider providerExecute
      *
      * @param string $title Параметр для метода
-     * @param bool $expectableResult Ожидаемый результат
+     * @param mixed $expectableResult Ожидаемый результат
      */
-    public function test_execute_withoutParameters_shouldReturnTrue(string $executionPath, bool $expectableResult): void
+    public function test_execute_withoutParameters_shouldReturnTrue(string $executionPath, mixed $expectableResult): void
     {
         $this->standardTaskFake->setIndex();
         $this->standardTaskFake->setTitle('ScriptFake');
@@ -405,11 +405,11 @@ class StandardTaskTest extends TestCase
         return [
             'Script Return 5' => [
                 '.\tests\src\fakes\ScriptReturn5Fake.php',
-                false,
+                5,
             ],
             'Script Return 0' => [
                 '.\tests\src\fakes\ScriptReturn0Fake.php',
-                true,
+                0,
             ],
         ];
     }
@@ -484,32 +484,16 @@ class StandardTaskTest extends TestCase
     }
 
     /** @test */
-    public function test_setWhenExecuteTrue_withFunction_mustExecuteBeforeTheExecuteMethod(): void
+    public function test_setWhenExecuteValue_withFunction_mustExecuteBeforeTheExecuteMethod(): void
     {
         $this->expectOutputString('setWhenExecuteTrue');
 
         $this->standardTaskFake->setIndex()
             ->setTitle('ScriptFake')
             ->setExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php')
-            ->setWhenExecuteTrue(
-                function () {
+            ->setWhenExecuteValue(
+                function ($thisTask, $result) {
                     print('setWhenExecuteTrue');
-                }
-            )
-            ->execute();
-    }
-
-    /** @test */
-    public function test_setWhenExecuteFalse_withFunction_mustExecuteBeforeTheExecuteMethod(): void
-    {
-        $this->expectOutputString('setWhenExecuteFalse');
-
-        $this->standardTaskFake->setIndex()
-            ->setTitle('ScriptFake')
-            ->setExecutionPath('.\tests\src\fakes\ScriptReturn5Fake.php')
-            ->setWhenExecuteFalse(
-                function () {
-                    print('setWhenExecuteFalse');
                 }
             )
             ->execute();
@@ -524,6 +508,6 @@ class StandardTaskTest extends TestCase
             ->addArgumentsAsString('ScriptReturn1or0Fake.php')
             ->execute();
 
-        $this->assertEquals(true, $result);
+        $this->assertEquals(0, $result);
     }
 }

@@ -6,8 +6,9 @@ namespace vadimcontenthunter\GitScripts\Tests;
 
 use Psr\Log\NullLogger;
 use PHPUnit\Framework\TestCase;
-use vadimcontenthunter\GitScripts\interfaces\ObjectTask;
+use vadimcontenthunter\GitScripts\Tasks;
 use vadimcontenthunter\GitScripts\TaskProgressLevel;
+use vadimcontenthunter\GitScripts\interfaces\ObjectTask;
 use vadimcontenthunter\GitScripts\Tests\src\fakes\TasksFake;
 use vadimcontenthunter\GitScripts\exception\GitScriptsException;
 use vadimcontenthunter\GitScripts\Tests\src\fakes\StandardTaskFake;
@@ -413,25 +414,21 @@ class TasksTest extends TestCase
      * @dataProvider providerResult
      *
      * @param array<ObjectTask> $taskList Список задач который будет добавлен
-     * @param bool $expectableResult Ожидаемый результат
+     * @param array $expectedFunctionResult Ожидаемый результат для пользовательской функции
      *
      * @return void
      */
-    public function test_result_withFunction_shouldChangeTheExternalVariable(
+    public function test_result_withFunction_mustExecuteAFunctionForEachElement(
         array $taskList,
-        bool $expectableResult
+        array $expectedFunctionResult
     ): void {
-        $testResult = null;
+        $customFunctionResults = [];
         $this->tasksFake->fakeSetTaskList($taskList);
-        $this->tasksFake->result(function (bool $result) use (&$testResult) {
-            if ($result) {
-                $testResult = true;
-            } else {
-                $testResult = false;
-            }
+        $this->tasksFake->result(function (int $result) use (&$customFunctionResults) {
+            $customFunctionResults[] = $result;
         });
 
-        $this->assertEquals($expectableResult, $testResult);
+        $this->assertEquals($expectedFunctionResult, $customFunctionResults);
     }
 
     public function providerResult(): array
@@ -442,18 +439,20 @@ class TasksTest extends TestCase
                     (new StandardTaskFake(new NullLogger()))
                         ->fakeSetParameterIndex('1')
                         ->fakeSetParameterTitle('Task 1')
-                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php'),
-                ],
-                true,
-            ],
-            'Test 2' => [
-                [
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('5'),
                     (new StandardTaskFake(new NullLogger()))
-                        ->fakeSetParameterIndex('1')
-                        ->fakeSetParameterTitle('Task 1')
-                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn5Fake.php'),
+                        ->fakeSetParameterIndex('2')
+                        ->fakeSetParameterTitle('Task 2')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('0'),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('3')
+                        ->fakeSetParameterTitle('Task 3')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('3'),
                 ],
-                false,
+                [5,0,3]
             ],
         ];
     }

@@ -111,19 +111,21 @@
                 ->setTitle('branch-search')
                 ->setExecutionPath('.\branch-search.php')
                 ->addArgumentsAsString('dev-vadim')
-                ->setWhenExecuteTrue(function (StandardTask $thisTask) use ($myLogger) {
-                    $myLogger->info('Началась ветвь от [' . $thisTask->getTitle() . ']');
-                    (new Tasks())
-                        ->addTaskList(
-                            (new StandardTask($myLogger))
-                                ->setTitle('phpcs 1')
-                                ->setExecutionPath('./vendor/bin/phpcs')
-                        )
-                        ->result(function ($result) {
-                            if ($result) {
-                                exit(0);
-                            }
-                        });
+                ->setWhenExecuteValue(function (StandardTask $thisTask, int $result) use ($myLogger) {
+                    if($result === 0){
+                        $myLogger->info('Началась ветвь от [' . $thisTask->getTitle() . ']');
+                        (new Tasks())
+                            ->addTaskList(
+                                (new StandardTask($myLogger))
+                                    ->setTitle('phpcs 1')
+                                    ->setExecutionPath('./vendor/bin/phpcs')
+                            )
+                            ->result(function ($result) {
+                                if ($result) {
+                                    exit(0);
+                                }
+                            });
+                    }
                 })
         )
         ->addTaskList(

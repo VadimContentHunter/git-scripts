@@ -65,11 +65,11 @@ class ObjectTaskFake implements ObjectTask
     /**
      * Метод выполняет текущую задачу.
      *
-     * @return bool Возвращает в случае успеха true, иначе false.
+     * @return int Возвращает значение которое вернул скрипт.
      */
-    public function execute(): bool
+    public function execute(): int
     {
-        return false;
+        return -1;
     }
 
     /**

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\GitScripts;
 
-use phpDocumentor\Reflection\Types\Never_;
 use vadimcontenthunter\GitScripts\exception\GitScriptsException;
 use vadimcontenthunter\GitScripts\interfaces\ObjectTask;
 
@@ -82,26 +81,34 @@ class Tasks
      *
      * @throws GitScriptsException
      */
-    public function start(): bool
+    public function start(): void
     {
         foreach ($this->getTaskList() as $key => $task) {
-            if ($task instanceof ObjectTask && !$task->execute()) {
-                return false;
+            if ($task instanceof ObjectTask) {
+                $task->execute();
+            } else {
+                throw new GitScriptsException("Incorrect array element type, must be an ObjectTask");
             }
         }
-        return true;
     }
 
     /**
-     * Выполняет пользовательскую функцию с результатом выполнения метода start
+     * Выполняет пользовательскую функцию к каждой задачи
      *
-     * @param callable $_function Функция, которая будет выполнена после выполнения метода start.
-     *                            В качестве аргумента принимает результат выполнения метола start.
+     * @param callable $_function Функция, которая будет выполнена после выполнения задачи.
+     *                            `function(int $result): void`
+     *                            В качестве 1 аргумент результат выполнения метода execute задачи.
      *
      * @return void
      */
     public function result(callable $_function): void
     {
-        $_function($this->start());
+        foreach ($this->getTaskList() as $key => $task) {
+            if ($task instanceof ObjectTask) {
+                $_function($task->execute());
+            } else {
+                throw new GitScriptsException("Incorrect array element type, must be an ObjectTask");
+            }
+        }
     }
 }
