@@ -77,7 +77,7 @@ class Tasks
     /**
      * Метод запускает список задач на выполнение.
      *
-     * @return bool
+     * @return void
      *
      * @throws GitScriptsException
      */

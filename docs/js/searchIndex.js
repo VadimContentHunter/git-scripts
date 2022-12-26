@@ -96,15 +96,10 @@ Search.appendIndex(
             "summary": "\u041C\u0435\u0442\u043E\u0434\u0020\u0432\u044B\u043F\u043E\u043B\u043D\u044F\u0435\u0442\u0020\u0442\u0435\u043A\u0443\u0449\u0443\u044E\u0020\u0437\u0430\u0434\u0430\u0447\u0443.",
             "url": "classes/vadimcontenthunter-GitScripts-model-StandardTask.html#method_execute"
         },                {
-            "fqsen": "\\vadimcontenthunter\\GitScripts\\model\\StandardTask\u003A\u003AsetWhenExecuteTrue\u0028\u0029",
-            "name": "setWhenExecuteTrue",
-            "summary": "\u0412\u044B\u043F\u043E\u043B\u043D\u044F\u0435\u0442\u0441\u044F\u0020\u0435\u0441\u043B\u0438\u0020\u043C\u0435\u0442\u043E\u0434\u0020execute\u0020\u0432\u043E\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442\u0020\u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435\u0020true\n\u0421\u0020\u043D\u0430\u0447\u0430\u043B\u043E\u0020\u0432\u044B\u043F\u043E\u043B\u043D\u0438\u0442\u044C\u0441\u044F\u0020\u0444\u0443\u043D\u043A\u0446\u0438\u044F\u0020\u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u043D\u0430\u044F\u0020\u0432\u0020\u044D\u0442\u043E\u043C\u0020\u043C\u0435\u0442\u043E\u0434\u0435,\n\u043F\u043E\u0442\u043E\u043C\u0020\u0432\u0435\u0440\u043D\u0435\u0442\u0441\u044F\u0020\u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435\u0020execute.",
-            "url": "classes/vadimcontenthunter-GitScripts-model-StandardTask.html#method_setWhenExecuteTrue"
-        },                {
-            "fqsen": "\\vadimcontenthunter\\GitScripts\\model\\StandardTask\u003A\u003AsetWhenExecuteFalse\u0028\u0029",
-            "name": "setWhenExecuteFalse",
-            "summary": "\u0412\u044B\u043F\u043E\u043B\u043D\u044F\u0435\u0442\u0441\u044F\u0020\u0435\u0441\u043B\u0438\u0020\u043C\u0435\u0442\u043E\u0434\u0020execute\u0020\u0432\u043E\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442\u0020\u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435\u0020false\n\u0421\u0020\u043D\u0430\u0447\u0430\u043B\u043E\u0020\u0432\u044B\u043F\u043E\u043B\u043D\u0438\u0442\u044C\u0441\u044F\u0020\u0444\u0443\u043D\u043A\u0446\u0438\u044F\u0020\u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u043D\u0430\u044F\u0020\u0432\u0020\u044D\u0442\u043E\u043C\u0020\u043C\u0435\u0442\u043E\u0434\u0435,\n\u043F\u043E\u0442\u043E\u043C\u0020\u0432\u0435\u0440\u043D\u0435\u0442\u0441\u044F\u0020\u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435\u0020execute.",
-            "url": "classes/vadimcontenthunter-GitScripts-model-StandardTask.html#method_setWhenExecuteFalse"
+            "fqsen": "\\vadimcontenthunter\\GitScripts\\model\\StandardTask\u003A\u003AsetWhenExecuteValue\u0028\u0029",
+            "name": "setWhenExecuteValue",
+            "summary": "\u0412\u044B\u043F\u043E\u043B\u043D\u044F\u0435\u0442\u0441\u044F\u0020\u043F\u043E\u0441\u043B\u0435\u0020\u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\u0020\u043C\u0435\u0442\u043E\u0434\u0430\u0020execute.",
+            "url": "classes/vadimcontenthunter-GitScripts-model-StandardTask.html#method_setWhenExecuteValue"
         },                {
             "fqsen": "\\vadimcontenthunter\\GitScripts\\model\\StandardTask\u003A\u003AaddArgumentsAsString\u0028\u0029",
             "name": "addArgumentsAsString",
@@ -131,15 +126,10 @@ Search.appendIndex(
             "summary": "\u041F\u0430\u0440\u0430\u043C\u0435\u0442\u0440\u0020\u0445\u0440\u0430\u043D\u0438\u0442\u0020\u0441\u0442\u0430\u0442\u0443\u0441\u0020\u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\u0020\u0437\u0430\u0434\u0430\u0447\u0438",
             "url": "classes/vadimcontenthunter-GitScripts-model-StandardTask.html#property_executionStatus"
         },                {
-            "fqsen": "\\vadimcontenthunter\\GitScripts\\model\\StandardTask\u003A\u003A\u0024functionWhenExecuteTrue",
-            "name": "functionWhenExecuteTrue",
-            "summary": "\u0425\u0440\u0430\u043D\u0438\u0442\u0020callback\u0020\u0444\u0443\u043D\u043A\u0446\u0438\u044E,\u0020\u043A\u043E\u0442\u043E\u0440\u0430\u044F\u0020\u0431\u0443\u0434\u0435\u0442\u0020\u0432\u044B\u043F\u043E\u043B\u043D\u044F\u0442\u044C\u0441\u044F,\n\u0435\u0441\u043B\u0438\u0020\u043C\u0435\u0442\u043E\u0434\u0020execute\u0020\u0431\u0443\u0434\u0435\u0442\u0020\u0432\u043E\u0437\u0432\u0440\u0430\u0449\u0430\u0442\u044C\u0020true.\u0020\u041F\u043E\u0020\u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E\u0020null.",
-            "url": "classes/vadimcontenthunter-GitScripts-model-StandardTask.html#property_functionWhenExecuteTrue"
-        },                {
-            "fqsen": "\\vadimcontenthunter\\GitScripts\\model\\StandardTask\u003A\u003A\u0024functionWhenExecuteFalse",
-            "name": "functionWhenExecuteFalse",
-            "summary": "\u0425\u0440\u0430\u043D\u0438\u0442\u0020callback\u0020\u0444\u0443\u043D\u043A\u0446\u0438\u044E,\u0020\u043A\u043E\u0442\u043E\u0440\u0430\u044F\u0020\u0431\u0443\u0434\u0435\u0442\u0020\u0432\u044B\u043F\u043E\u043B\u043D\u044F\u0442\u044C\u0441\u044F,\n\u0435\u0441\u043B\u0438\u0020\u043C\u0435\u0442\u043E\u0434\u0020execute\u0020\u0431\u0443\u0434\u0435\u0442\u0020\u0432\u043E\u0437\u0432\u0440\u0430\u0449\u0430\u0442\u044C\u0020false.\u0020\u041F\u043E\u0020\u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E\u0020null.",
-            "url": "classes/vadimcontenthunter-GitScripts-model-StandardTask.html#property_functionWhenExecuteFalse"
+            "fqsen": "\\vadimcontenthunter\\GitScripts\\model\\StandardTask\u003A\u003A\u0024functionWhenExecuteValue",
+            "name": "functionWhenExecuteValue",
+            "summary": "\u0425\u0440\u0430\u043D\u0438\u0442\u0020callback\u0020\u0444\u0443\u043D\u043A\u0446\u0438\u044E,\u0020\u043A\u043E\u0442\u043E\u0440\u0430\u044F\u0020\u0431\u0443\u0434\u0435\u0442\u0020\u0432\u044B\u043F\u043E\u043B\u043D\u044F\u0442\u044C\u0441\u044F,\n\u0441\u043E\u0020\u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435\u043C\u0020\u043A\u043E\u0442\u043E\u0440\u043E\u0435\u0020\u0432\u0435\u0440\u043D\u0435\u0442\u0020\u043C\u0435\u0442\u043E\u0434\u0020execute.\u0020\u041F\u043E\u0020\u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E\u0020null.",
+            "url": "classes/vadimcontenthunter-GitScripts-model-StandardTask.html#property_functionWhenExecuteValue"
         },                {
             "fqsen": "\\vadimcontenthunter\\GitScripts\\model\\StandardTask\u003A\u003A\u0024arguments",
             "name": "arguments",
@@ -213,7 +203,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\vadimcontenthunter\\GitScripts\\Tasks\u003A\u003Aresult\u0028\u0029",
             "name": "result",
-            "summary": "\u0412\u044B\u043F\u043E\u043B\u043D\u044F\u0435\u0442\u0020\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\u0441\u043A\u0443\u044E\u0020\u0444\u0443\u043D\u043A\u0446\u0438\u044E\u0020\u0441\u0020\u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442\u043E\u043C\u0020\u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\u0020\u043C\u0435\u0442\u043E\u0434\u0430\u0020start",
+            "summary": "\u0412\u044B\u043F\u043E\u043B\u043D\u044F\u0435\u0442\u0020\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\u0441\u043A\u0443\u044E\u0020\u0444\u0443\u043D\u043A\u0446\u0438\u044E\u0020\u043A\u0020\u043A\u0430\u0436\u0434\u043E\u0439\u0020\u0437\u0430\u0434\u0430\u0447\u0438",
             "url": "classes/vadimcontenthunter-GitScripts-Tasks.html#method_result"
         },                {
             "fqsen": "\\vadimcontenthunter\\GitScripts\\Tasks\u003A\u003A\u0024taskList",

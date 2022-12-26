@@ -212,20 +212,12 @@
 <dd>Параметр хранит статус выполнения задачи</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html#property_functionWhenExecuteFalse">$functionWhenExecuteFalse</a>
+    <a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html#property_functionWhenExecuteValue">$functionWhenExecuteValue</a>
     <span>
                         &nbsp;: <abbr title="\Closure">Closure</abbr>|null            </span>
 </dt>
 <dd>Хранит callback функцию, которая будет выполняться,
-если метод execute будет возвращать false. По умолчанию null.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html#property_functionWhenExecuteTrue">$functionWhenExecuteTrue</a>
-    <span>
-                        &nbsp;: <abbr title="\Closure">Closure</abbr>|null            </span>
-</dt>
-<dd>Хранит callback функцию, которая будет выполняться,
-если метод execute будет возвращать true. По умолчанию null.</dd>
+со значением которое вернет метод execute. По умолчанию null.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
     <a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html#property_index">$index</a>
@@ -265,7 +257,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html#method_execute">execute()</a>
     <span>
-                                &nbsp;: bool    </span>
+                                &nbsp;: int    </span>
 </dt>
 <dd>Метод выполняет текущую задачу.</dd>
 
@@ -319,22 +311,11 @@
 <dd>Метод устанавливает наименование для задачи.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html#method_setWhenExecuteFalse">setWhenExecuteFalse()</a>
+    <a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html#method_setWhenExecuteValue">setWhenExecuteValue()</a>
     <span>
                                 &nbsp;: <a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html"><abbr title="\vadimcontenthunter\GitScripts\model\StandardTask">StandardTask</abbr></a>    </span>
 </dt>
-<dd>Выполняется если метод execute возвращает значение false
-С начало выполниться функция установленная в этом методе,
-потом вернется значение execute.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html#method_setWhenExecuteTrue">setWhenExecuteTrue()</a>
-    <span>
-                                &nbsp;: <a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html"><abbr title="\vadimcontenthunter\GitScripts\model\StandardTask">StandardTask</abbr></a>    </span>
-</dt>
-<dd>Выполняется если метод execute возвращает значение true
-С начало выполниться функция установленная в этом методе,
-потом вернется значение execute.</dd>
+<dd>Выполняется после выполнения метода execute.</dd>
 
         </dl>
 
@@ -364,7 +345,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/model/StandardTask.php"><a href="files/src-model-standardtask.html"><abbr title="src/model/StandardTask.php">StandardTask.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">72</span>
+    <span class="phpdocumentor-element-found-in__line">64</span>
 
     </aside>
 
@@ -454,43 +435,9 @@
             -protected
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="property_functionWhenExecuteFalse">
-        $functionWhenExecuteFalse
-        <a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html#property_functionWhenExecuteFalse" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/model/StandardTask.php"><a href="files/src-model-standardtask.html"><abbr title="src/model/StandardTask.php">StandardTask.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">65</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Хранит callback функцию, которая будет выполняться,
-если метод execute будет возвращать false. По умолчанию null.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type"><abbr title="\Closure">Closure</abbr>|null</span>
-    <span class="phpdocumentor-signature__name">$functionWhenExecuteFalse</span>
-     = <span class="phpdocumentor-signature__default-value">null</span></code>
-
-    
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_functionWhenExecuteTrue">
-        $functionWhenExecuteTrue
-        <a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html#property_functionWhenExecuteTrue" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="property_functionWhenExecuteValue">
+        $functionWhenExecuteValue
+        <a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html#property_functionWhenExecuteValue" class="headerlink"><i class="fas fa-link"></i></a>
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -502,12 +449,12 @@
     </aside>
 
         <p class="phpdocumentor-summary">Хранит callback функцию, которая будет выполняться,
-если метод execute будет возвращать true. По умолчанию null.</p>
+со значением которое вернет метод execute. По умолчанию null.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
         <span class="phpdocumentor-signature__type"><abbr title="\Closure">Closure</abbr>|null</span>
-    <span class="phpdocumentor-signature__name">$functionWhenExecuteTrue</span>
+    <span class="phpdocumentor-signature__name">$functionWhenExecuteValue</span>
      = <span class="phpdocumentor-signature__default-value">null</span></code>
 
     
@@ -564,7 +511,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/model/StandardTask.php"><a href="files/src-model-standardtask.html"><abbr title="src/model/StandardTask.php">StandardTask.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">79</span>
+    <span class="phpdocumentor-element-found-in__line">71</span>
 
     </aside>
 
@@ -634,7 +581,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/model/StandardTask.php"><a href="files/src-model-standardtask.html"><abbr title="src/model/StandardTask.php">StandardTask.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">86</span>
+    <span class="phpdocumentor-element-found-in__line">78</span>
 
     </aside>
 
@@ -679,7 +626,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/model/StandardTask.php"><a href="files/src-model-standardtask.html"><abbr title="src/model/StandardTask.php">StandardTask.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">362</span>
+    <span class="phpdocumentor-element-found-in__line">345</span>
 
     </aside>
 
@@ -726,7 +673,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/model/StandardTask.php"><a href="files/src-model-standardtask.html"><abbr title="src/model/StandardTask.php">StandardTask.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">255</span>
+    <span class="phpdocumentor-element-found-in__line">251</span>
 
     </aside>
 
@@ -734,9 +681,11 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">execute</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+                    <span class="phpdocumentor-signature__name">execute</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
 
-    
+        <section class="phpdocumentor-description"><p>Меняется статус задачи.</p>
+</section>
+
     
     
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
@@ -755,10 +704,15 @@
                         </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
+    <span class="phpdocumentor-signature__response_type">int</span>
             &mdash;
-            <section class="phpdocumentor-description"><p>Возвращает в случае успеха true, иначе false.
-Вернет true даже если задача была выполнена но не с нулевым кодом завершения.</p>
+            <section class="phpdocumentor-description"><p>Возвращает значение которое вернул скрипт. Вернет:</p>
+<ul>
+<li>0 - в случае успешного выполнения</li>
+<li>-1 - в случае если задача не обладает статусом WAITING</li>
+<li>-2 - в случае если скрипт не вернет значение</li>
+<li>-3 - в случае если по какой либо причине скрипт не выполниться</li>
+</ul>
 </section>
 
     
@@ -776,7 +730,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/model/StandardTask.php"><a href="files/src-model-standardtask.html"><abbr title="src/model/StandardTask.php">StandardTask.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">234</span>
+    <span class="phpdocumentor-element-found-in__line">226</span>
 
     </aside>
 
@@ -809,7 +763,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/model/StandardTask.php"><a href="files/src-model-standardtask.html"><abbr title="src/model/StandardTask.php">StandardTask.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">192</span>
+    <span class="phpdocumentor-element-found-in__line">184</span>
 
     </aside>
 
@@ -856,7 +810,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/model/StandardTask.php"><a href="files/src-model-standardtask.html"><abbr title="src/model/StandardTask.php">StandardTask.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">206</span>
+    <span class="phpdocumentor-element-found-in__line">198</span>
 
     </aside>
 
@@ -889,7 +843,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/model/StandardTask.php"><a href="files/src-model-standardtask.html"><abbr title="src/model/StandardTask.php">StandardTask.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">220</span>
+    <span class="phpdocumentor-element-found-in__line">212</span>
 
     </aside>
 
@@ -922,7 +876,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/model/StandardTask.php"><a href="files/src-model-standardtask.html"><abbr title="src/model/StandardTask.php">StandardTask.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">174</span>
+    <span class="phpdocumentor-element-found-in__line">166</span>
 
     </aside>
 
@@ -979,7 +933,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/model/StandardTask.php"><a href="files/src-model-standardtask.html"><abbr title="src/model/StandardTask.php">StandardTask.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">101</span>
+    <span class="phpdocumentor-element-found-in__line">93</span>
 
     </aside>
 
@@ -1038,7 +992,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/model/StandardTask.php"><a href="files/src-model-standardtask.html"><abbr title="src/model/StandardTask.php">StandardTask.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">155</span>
+    <span class="phpdocumentor-element-found-in__line">147</span>
 
     </aside>
 
@@ -1088,59 +1042,9 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_setWhenExecuteFalse">
-        setWhenExecuteFalse()
-        <a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html#method_setWhenExecuteFalse" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/model/StandardTask.php"><a href="files/src-model-standardtask.html"><abbr title="src/model/StandardTask.php">StandardTask.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">348</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Выполняется если метод execute возвращает значение false
-С начало выполниться функция установленная в этом методе,
-потом вернется значение execute.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">setWhenExecuteFalse</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">callable&nbsp;</span><span class="phpdocumentor-signature__argument__name">$_function</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html"><abbr title="\vadimcontenthunter\GitScripts\model\StandardTask">StandardTask</abbr></a></span></code>
-
-        <section class="phpdocumentor-description"><p>В качестве аргумента, функция принимает текущий объект.
-Результат функции будет не обработан.</p>
-</section>
-
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$_function</span>
-                : <span class="phpdocumentor-signature__argument__return-type">callable</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Функция, которая будет выполнена</p>
-</section>
-
-            </dd>
-            </dl>
-
-    
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html"><abbr title="\vadimcontenthunter\GitScripts\model\StandardTask">StandardTask</abbr></a></span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_setWhenExecuteTrue">
-        setWhenExecuteTrue()
-        <a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html#method_setWhenExecuteTrue" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_setWhenExecuteValue">
+        setWhenExecuteValue()
+        <a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html#method_setWhenExecuteValue" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/model/StandardTask.php"><a href="files/src-model-standardtask.html"><abbr title="src/model/StandardTask.php">StandardTask.php</abbr></a></abbr>
@@ -1149,16 +1053,16 @@
 
     </aside>
 
-        <p class="phpdocumentor-summary">Выполняется если метод execute возвращает значение true
-С начало выполниться функция установленная в этом методе,
-потом вернется значение execute.</p>
+        <p class="phpdocumentor-summary">Выполняется после выполнения метода execute.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">setWhenExecuteTrue</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">callable&nbsp;</span><span class="phpdocumentor-signature__argument__name">$_function</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html"><abbr title="\vadimcontenthunter\GitScripts\model\StandardTask">StandardTask</abbr></a></span></code>
+                    <span class="phpdocumentor-signature__name">setWhenExecuteValue</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">callable&nbsp;</span><span class="phpdocumentor-signature__argument__name">$_function</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/vadimcontenthunter-GitScripts-model-StandardTask.html"><abbr title="\vadimcontenthunter\GitScripts\model\StandardTask">StandardTask</abbr></a></span></code>
 
-        <section class="phpdocumentor-description"><p>В качестве аргумента, функция принимает текущий объект.
-Результат функции будет не обработан.</p>
+        <section class="phpdocumentor-description"><p>С начало выполниться функция установленная в этом методе,
+потом вернется значение execute.
+В качестве 1 аргумента, функция принимает текущий объект, а 2 результат выполнения метода execute
+Результат пользовательской функции будет не обработан.</p>
 </section>
 
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
@@ -1168,7 +1072,7 @@
                 : <span class="phpdocumentor-signature__argument__return-type">callable</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Функция, которая будет выполнена</p>
+                    <section class="phpdocumentor-description"><p>Функция, которая будет выполнена. <code class="prettyprint">function(ObjectTask $thisTask, int $result): void</code></p>
 </section>
 
             </dd>
