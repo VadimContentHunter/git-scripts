@@ -6,8 +6,9 @@ namespace vadimcontenthunter\GitScripts\Tests;
 
 use Psr\Log\NullLogger;
 use PHPUnit\Framework\TestCase;
-use vadimcontenthunter\GitScripts\interfaces\ObjectTask;
+use vadimcontenthunter\GitScripts\Tasks;
 use vadimcontenthunter\GitScripts\TaskProgressLevel;
+use vadimcontenthunter\GitScripts\interfaces\ObjectTask;
 use vadimcontenthunter\GitScripts\Tests\src\fakes\TasksFake;
 use vadimcontenthunter\GitScripts\exception\GitScriptsException;
 use vadimcontenthunter\GitScripts\Tests\src\fakes\StandardTaskFake;
@@ -410,31 +411,40 @@ class TasksTest extends TestCase
 
     /**
      * @test
-     * @dataProvider providerResult
+     * @dataProvider providerResultAfterDeletion
      *
      * @param array<ObjectTask> $taskList Список задач который будет добавлен
-     * @param mixed $expectableResult Ожидаемый результат
+     * @param array $deleteElements Массив с индексами на удаление
+     * @param array<ObjectTask> $expectedResultForTaskList Ожидаемый результат  для Листа задач
+     * @param array $expectedFunctionResult Ожидаемый результат для пользовательской функции
      *
      * @return void
      */
-    public function test_result_withFunction_shouldChangeTheExternalVariable(
+    public function test_result_withFunction_shouldChangeTheListOfTasksAfterDeletion(
         array $taskList,
-        mixed $expectableResult
+        array $deleteElements,
+        array $expectedResultForTaskList,
+        array $expectedFunctionResult
     ): void {
-        $testResult = null;
+        $customFunctionResults = [];
         $this->tasksFake->fakeSetTaskList($taskList);
-        $this->tasksFake->result(function ($thisTask, int $result) use (&$testResult) {
-            if ($result === 0) {
-                $testResult = true;
-            } else {
-                $testResult = false;
+        $this->tasksFake->result(function (Tasks $taskQueue, ObjectTask $thisTask, int $result) use ($deleteElements, &$customFunctionResults) {
+            foreach ($deleteElements as $parameterIndex => $deleteIndexes) {
+                if (strcmp($thisTask->getIndex(), (string)$parameterIndex) === 0) {
+                    foreach ($deleteIndexes as $elementId => $deleteIndex) {
+                        $taskQueue->deleteTaskList($deleteIndex);
+                    }
+                }
             }
+
+            $customFunctionResults[] = $result;
         });
 
-        $this->assertEquals($expectableResult, $testResult);
+        $this->assertEquals($expectedResultForTaskList, $this->tasksFake->getTaskList());
+        $this->assertEquals($expectedFunctionResult, $customFunctionResults);
     }
 
-    public function providerResult(): array
+    public function providerResultAfterDeletion(): array
     {
         return [
             'Test 1' => [
@@ -442,9 +452,195 @@ class TasksTest extends TestCase
                     (new StandardTaskFake(new NullLogger()))
                         ->fakeSetParameterIndex('1')
                         ->fakeSetParameterTitle('Task 1')
-                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturn0Fake.php'),
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('5'),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('2')
+                        ->fakeSetParameterTitle('Task 2')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('0'),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('3')
+                        ->fakeSetParameterTitle('Task 3')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('0'),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('4')
+                        ->fakeSetParameterTitle('Task 4')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('4'),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('5')
+                        ->fakeSetParameterTitle('Task 5')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('0'),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('6')
+                        ->fakeSetParameterTitle('Task 6')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('1'),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('7')
+                        ->fakeSetParameterTitle('Task 7')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('0'),
                 ],
-                true,
+                [
+                    '1' => ['2','1'],
+                    '5' => ['6','1','7'],
+                ],
+                [
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('3')
+                        ->fakeSetParameterTitle('Task 3')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('0')
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::DONE),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('4')
+                        ->fakeSetParameterTitle('Task 4')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('4')
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::ERROR),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('5')
+                        ->fakeSetParameterTitle('Task 5')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('0')
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::DONE),
+                ],
+                [5,0,4,0]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider providerResultAfterAdding
+     *
+     * @param array<ObjectTask> $taskList Список задач который будет добавлен
+     * @param array $tasksToAdd Массив с объектами на добавление
+     * @param array<ObjectTask> $expectedResultForTaskList Ожидаемый результат для Листа задач
+     * @param array $expectedFunctionResult Ожидаемый результат для пользовательской функции
+     *
+     * @return void
+     */
+    public function test_result_withFunction_shouldChangeTheListOfTasksAfterAdding(
+        array $taskList,
+        array $tasksToAdd,
+        array $expectedResultForTaskList,
+        array $expectedFunctionResult
+    ): void {
+        $customFunctionResults = [];
+        $this->tasksFake->fakeSetTaskList($taskList);
+        $this->tasksFake->result(function (Tasks $taskQueue, ObjectTask $thisTask, int $result) use ($tasksToAdd, &$customFunctionResults) {
+            foreach ($tasksToAdd as $parameterIndex => $addTasks) {
+                if (strcmp($thisTask->getIndex(), (string)$parameterIndex) === 0) {
+                    foreach ($addTasks as $elementId => $newTask) {
+                        $taskQueue->addTaskList($newTask);
+                    }
+                }
+            }
+
+            $customFunctionResults[] = $result;
+        });
+
+        $this->assertEquals($expectedResultForTaskList, $this->tasksFake->getTaskList());
+        $this->assertEquals($expectedFunctionResult, $customFunctionResults);
+    }
+
+    public function providerResultAfterAdding(): array
+    {
+        return [
+            'Test 1' => [
+                [
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('1')
+                        ->fakeSetParameterTitle('Task 1')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('5'),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('2')
+                        ->fakeSetParameterTitle('Task 2')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('0'),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('3')
+                        ->fakeSetParameterTitle('Task 3')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('0'),
+                ],
+                [
+                    '1' => [
+                        (new StandardTaskFake(new NullLogger()))
+                            // ->fakeSetParameterIndex('4')
+                            ->fakeSetParameterTitle('Task 4')
+                            ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                            ->fakeSetParameterArguments('4'),
+                        (new StandardTaskFake(new NullLogger()))
+                            // ->fakeSetParameterIndex('15')
+                            ->fakeSetParameterTitle('Task 15')
+                            ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                            ->fakeSetParameterArguments('0'),
+                    ],
+                    '3' => [
+                        (new StandardTaskFake(new NullLogger()))
+                            // ->fakeSetParameterIndex('6')
+                            ->fakeSetParameterTitle('Task 6')
+                            ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                            ->fakeSetParameterArguments('1'),
+                        (new StandardTaskFake(new NullLogger()))
+                            // ->fakeSetParameterIndex('7')
+                            ->fakeSetParameterTitle('Task 7')
+                            ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                            ->fakeSetParameterArguments('0'),
+                    ],
+                ],
+                [
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('1')
+                        ->fakeSetParameterTitle('Task 1')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('5')
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::ERROR),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('2')
+                        ->fakeSetParameterTitle('Task 2')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('0')
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::DONE),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('3')
+                        ->fakeSetParameterTitle('Task 3')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('0')
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::DONE),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('4')
+                        ->fakeSetParameterTitle('Task 4')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('4')
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::ERROR),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('15')
+                        ->fakeSetParameterTitle('Task 15')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('0')
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::DONE),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('6')
+                        ->fakeSetParameterTitle('Task 6')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('1')
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::ERROR),
+                    (new StandardTaskFake(new NullLogger()))
+                        ->fakeSetParameterIndex('7')
+                        ->fakeSetParameterTitle('Task 7')
+                        ->fakeSetParameterExecutionPath('.\tests\src\fakes\ScriptReturnArgument.php')
+                        ->fakeSetParameterArguments('0')
+                        ->fakeSetParameterExecutionStatus(TaskProgressLevel::DONE),
+                ],
+                [5,0,0,4,0,1,0]
             ],
         ];
     }
